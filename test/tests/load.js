@@ -19,8 +19,6 @@
 
 /*#*/ include('Emitter.js');
 
-/*#*/ include('Project.js');
-
 /*#*/ include('Item.js');
 /*#*/ include('Item_Cloning.js');
 /*#*/ include('Item_Order.js');
@@ -47,12 +45,6 @@
 /*#*/ include('CurveLocation.js');
 
 /*#*/ include('Style.js');
-
-/*#*/ include('SymbolItem.js');
-
-/*#*/ include('Raster.js');
-
-/*#*/ include('TextItem.js');
 
 /*#*/ include('HitResult.js');
 

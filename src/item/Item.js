@@ -86,38 +86,7 @@ var Item = Base.extend(Emitter, /** @lends Item# */{
 new function() { // Injection scope for various item event handlers
     var handlers = ['onMouseDown', 'onMouseUp', 'onMouseDrag', 'onClick',
             'onDoubleClick', 'onMouseMove', 'onMouseEnter', 'onMouseLeave'];
-    return Base.each(handlers,
-        function(name) {
-            this._events[name] = {
-                install: function(type) {
-                    this.getView()._countItemEvent(type, 1);
-                },
-
-                uninstall: function(type) {
-                    this.getView()._countItemEvent(type, -1);
-                }
-            };
-        }, {
-            _events: {
-                onFrame: {
-                    install: function() {
-                        this.getView()._animateItem(this, true);
-                    },
-
-                    uninstall: function() {
-                        this.getView()._animateItem(this, false);
-                    }
-                },
-
-                // Only for external sources, e.g. Raster
-                onLoad: {},
-                onError: {}
-            },
-            statics: {
-                _itemHandlers: handlers
-            }
-        }
-    );
+    return Base.each(handlers, function(name) { });
 }, /** @lends Item# */{
     initialize: function Item() {
         // Do nothing, but declare it for named constructors.
@@ -139,8 +108,6 @@ new function() { // Injection scope for various item event handlers
         var hasProps = props && Base.isPlainObject(props),
             internal = hasProps && props.internal === true,
             matrix = this._matrix = new Matrix(),
-            // Allow setting another project than the currently active one.
-            project = hasProps && props.project || paper.project,
             settings = paper.settings;
         this._id = internal ? null : UID.get();
         this._parent = this._index = null;
@@ -151,15 +118,9 @@ new function() { // Injection scope for various item event handlers
         if (point)
             matrix.translate(point);
         matrix._owner = this;
-        this._style = new Style(project._currentStyle, this, project);
-        // Do not add to the project if it's an internal path,  or if
-        // props.insert  or settings.isnertItems is false.
-        if (internal || hasProps && props.insert == false
-            || !settings.insertItems && !(hasProps && props.insert === true)) {
-            this._setProject(project);
-        } else {
-            (hasProps && props.parent || project)
-                    ._insertItem(undefined, this, true); // _created = true
+        this._style = new Style(null, this);
+        if (hasProps && props.parent) {
+            props.parent._insertItem(undefined, this);
         }
         // Filter out Item.NO_INSERT before _set(), for performance reasons.
         if (hasProps && props !== Item.NO_INSERT) {
@@ -210,9 +171,7 @@ new function() { // Injection scope for various item event handlers
      * @param {ChangeFlag} flags describes what exactly has changed
      */
     _changed: function(flags) {
-        var symbol = this._symbol,
-            cacheParent = this._parent || symbol,
-            project = this._project;
+        var cacheParent = this._parent;
         if (flags & /*#=*/ChangeFlag.GEOMETRY) {
             // Clear cached bounds, position and decomposed matrix whenever
             // geometry changes.
@@ -232,11 +191,6 @@ new function() { // Injection scope for various item event handlers
             // child triggers this notification on the parent.
             Item._clearBoundsCache(this);
         }
-        if (project)
-            project._changed(flags, this);
-        // If this item is a symbol's definition, notify it of the change too
-        if (symbol)
-            symbol._changed(flags);
     },
 
     /**
@@ -540,93 +494,6 @@ new function() { // Injection scope for various item event handlers
      * @ignore
      */
 
-    getSelection: function() {
-        return this._selection;
-    },
-
-    setSelection: function(selection) {
-        if (selection !== this._selection) {
-            this._selection = selection;
-            var project = this._project;
-            if (project) {
-                project._updateSelection(this);
-                this._changed(/*#=*/Change.ATTRIBUTE);
-            }
-        }
-    },
-
-    _changeSelection: function(flag, selected) {
-        var selection = this._selection;
-        this.setSelection(selected ? selection | flag : selection & ~flag);
-    },
-
-    /**
-     * Specifies whether the item is selected. This will also return `true` for
-     * {@link Group} items if they are partially selected, e.g. groups
-     * containing selected or partially selected paths.
-     *
-     * Paper.js draws the visual outlines of selected items on top of your
-     * project. This can be useful for debugging, as it allows you to see the
-     * construction of paths, position of path curves, individual segment points
-     * and bounding boxes of symbol and raster items.
-     *
-     * @bean
-     * @type Boolean
-     * @default false
-     * @see Project#selectedItems
-     * @see Segment#selected
-     * @see Curve#selected
-     * @see Point#selected
-     *
-     * @example {@paperscript}
-     * // Selecting an item:
-     * var path = new Path.Circle({
-     *     center: [80, 50],
-     *     radius: 35
-     * });
-     * path.selected = true; // Select the path
-     */
-    isSelected: function() {
-        if (this._selectChildren) {
-            var children = this._children;
-            for (var i = 0, l = children.length; i < l; i++)
-                if (children[i].isSelected())
-                    return true;
-        }
-        return !!(this._selection & /*#=*/ItemSelection.ITEM);
-    },
-
-    setSelected: function(selected) {
-        if (this._selectChildren) {
-            var children = this._children;
-            for (var i = 0, l = children.length; i < l; i++)
-                children[i].setSelected(selected);
-        }
-        this._changeSelection(/*#=*/ItemSelection.ITEM, selected);
-    },
-
-    isFullySelected: function() {
-        var children = this._children,
-            selected = !!(this._selection & /*#=*/ItemSelection.ITEM);
-        if (children && selected) {
-            for (var i = 0, l = children.length; i < l; i++)
-                if (!children[i].isFullySelected())
-                    return false;
-            return true;
-        }
-        // If there are no children, this is the same as #selected
-        return selected;
-    },
-
-    setFullySelected: function(selected) {
-        var children = this._children;
-        if (children) {
-            for (var i = 0, l = children.length; i < l; i++)
-                children[i].setFullySelected(selected);
-        }
-        this._changeSelection(/*#=*/ItemSelection.ITEM, selected);
-    },
-
     /**
      * Specifies whether the item defines a clip mask. This can only be set on
      * paths, compound paths, and text frame objects, and only if the item is
@@ -917,7 +784,7 @@ new function() { // Injection scope for various item event handlers
             bounds = this._bounds;
         // NOTE: This needs to happen before returning cached values, since even
         // then, _boundsCache needs to be kept up-to-date.
-        Item._updateBoundsCache(this._parent || this._symbol, cacheItem);
+        Item._updateBoundsCache(this._parent, cacheItem);
         if (cacheKey && bounds && cacheKey in bounds) {
             var cached = bounds[cacheKey];
             return {
@@ -960,7 +827,7 @@ new function() { // Injection scope for various item event handlers
     _getStrokeMatrix: function(matrix, options) {
         var parent = this.getStrokeScaling() ? null
                 : options && options.internal ? this
-                    : this._parent || this._symbol && this._symbol._item,
+                    : this._parent,
             mx = parent ? parent.getViewMatrix().invert() : matrix;
         return mx && mx._shiftless();
     },
@@ -1205,7 +1072,7 @@ new function() { // Injection scope for various item event handlers
      */
     getGlobalMatrix: function(_dontClone) {
         var matrix = this._globalMatrix,
-            updateVersion = this._project._updateVersion;
+            updateVersion = 0;
         // If #_globalMatrix is out of sync, recalculate it now.
         if (matrix && matrix._updateVersion !== updateVersion)
             matrix = null;
@@ -1228,7 +1095,7 @@ new function() { // Injection scope for various item event handlers
      * @type Matrix
      */
     getViewMatrix: function() {
-        return this.getGlobalMatrix().prepend(this.getView()._matrix);
+        return this.getGlobalMatrix();  //.prepend(this.getView()._matrix);
     },
 
     /**
@@ -1262,53 +1129,10 @@ new function() { // Injection scope for various item event handlers
     setTransformContent: '#setApplyMatrix',
 }, /** @lends Item# */{
     /**
-     * {@grouptitle Project Hierarchy}
-     * The project that this item belongs to.
-     *
-     * @type Project
-     * @bean
-     */
-    getProject: function() {
-        return this._project;
-    },
-
-    _setProject: function(project, installEvents) {
-        if (this._project !== project) {
-            // Uninstall events before switching project, then install them
-            // again.
-            // NOTE: _installEvents handles all children too!
-            if (this._project)
-                this._installEvents(false);
-            this._project = project;
-            var children = this._children;
-            for (var i = 0, l = children && children.length; i < l; i++)
-                children[i]._setProject(project);
-            // We need to call _installEvents(true) again, but merge it with
-            // handling of installEvents argument below.
-            installEvents = true;
-        }
-        if (installEvents)
-            this._installEvents(true);
-    },
-
-    /**
-     * The view that this item belongs to.
-     * @type View
-     * @bean
-     */
-    getView: function() {
-        return this._project._view;
-    },
-
-    /**
      * Overrides Emitter#_installEvents to also call _installEvents on all
      * children.
      */
     _installEvents: function _installEvents(install) {
-        _installEvents.base.call(this, install);
-        var children = this._children;
-        for (var i = 0, l = children && children.length; i < l; i++)
-            children[i]._installEvents(install);
     },
 
     /**
@@ -1645,9 +1469,6 @@ new function() { // Injection scope for various item event handlers
         // in case #applyMatrix is true.
         this.setApplyMatrix(source._applyMatrix);
         this.setPivot(source._pivot);
-        // Copy over the selection state, use setSelection so the item
-        // is also added to Project#_selectionItems if it is selected.
-        this.setSelection(source._selection);
         // Copy over data and name as well.
         var data = source._data,
             name = source._name;
@@ -1656,66 +1477,6 @@ new function() { // Injection scope for various item event handlers
             this.setName(name);
     },
 
-    /**
-     * Rasterizes the item into a newly created Raster object. The item itself
-     * is not removed after rasterization.
-     *
-     * @param {Number} [resolution=view.resolution] the resolution of the raster
-     *     in pixels per inch (DPI). If not specified, the value of
-     *     `view.resolution` is used.
-     * @param {Boolean} [insert=true] specifies whether the raster should be
-     *     inserted into the scene graph. When set to `true`, it is inserted
-     *     above the original
-     * @return {Raster} the newly created raster item
-     *
-     * @example {@paperscript}
-     * // Rasterizing an item:
-     * var circle = new Path.Circle({
-     *     center: [50, 50],
-     *     radius: 5,
-     *     fillColor: 'red'
-     * });
-     *
-     * // Create a rasterized version of the path:
-     * var raster = circle.rasterize();
-     *
-     * // Move it 100pt to the right:
-     * raster.position.x += 100;
-     *
-     * // Scale the path and the raster by 300%, so we can compare them:
-     * circle.scale(5);
-     * raster.scale(5);
-     */
-    rasterize: function(resolution, insert) {
-        // TODO: Switch to options object for more descriptive call signature.
-        var bounds = this.getStrokeBounds(),
-            scale = (resolution || this.getView().getResolution()) / 72,
-            // Floor top-left corner and ceil bottom-right corner, to never
-            // blur or cut pixels.
-            topLeft = bounds.getTopLeft().floor(),
-            bottomRight = bounds.getBottomRight().ceil(),
-            size = new Size(bottomRight.subtract(topLeft)),
-            raster = new Raster(Item.NO_INSERT);
-        if (!size.isZero()) {
-            var canvas = CanvasProvider.getCanvas(size.multiply(scale)),
-                ctx = canvas.getContext('2d'),
-                matrix = new Matrix().scale(scale).translate(topLeft.negate());
-            ctx.save();
-            matrix.applyToContext(ctx);
-            // See Project#draw() for an explanation of new Base()
-            this.draw(ctx, new Base({ matrices: [matrix] }));
-            ctx.restore();
-            // NOTE: We don't need to release the canvas since it belongs to the
-            // raster now!
-            raster.setCanvas(canvas);
-        }
-        raster.transform(new Matrix().translate(topLeft.add(size.divide(2)))
-                // Take resolution into account and scale back to original size.
-                .scale(1 / scale));
-        if (insert === undefined || insert)
-            raster.insertAbove(this);
-        return raster;
-    },
 
     /**
      * {@grouptitle Geometric Tests}
@@ -1838,12 +1599,6 @@ new function() { // Injection scope for hit-test functions shared with project
         return null;
     }
 
-    Project.inject({
-        hitTest: hitTest,
-        hitTestAll: hitTestAll,
-        _hitTest: hitTestChildren
-    });
-
     return {
         // NOTE: Documentation is in the scope that follows.
         hitTest: hitTest,
@@ -1936,7 +1691,7 @@ new function() { // Injection scope for hit-test functions shared with project
                     ? parentViewMatrix.appended(matrix)
                     // If this is the first one in the recursion, factor in the
                     // zoom of the view and the globalMatrix of the item.
-                    : this.getGlobalMatrix().prepend(this.getView()._matrix),
+                    : this.getGlobalMatrix(),   // .prepend(this.getView()._matrix),
             // Calculate the transformed padding as 2D size that describes the
             // transformed tolerance circle / ellipse. Make sure it's never 0
             // since we're using it for division (see checkBounds()).
@@ -1959,7 +1714,7 @@ new function() { // Injection scope for hit-test functions shared with project
         // See if we should check self (own content), by filtering for type,
         // guides and selected items if that's required.
         var checkSelf = !(options.guides && !this._guide
-                || options.selected && !this.isSelected()
+                || options.selected
                 // Support legacy Item#type property to match hyphenated
                 // class-names.
                 || options.type && options.type !== Base.hyphenate(this._class)
@@ -2450,20 +2205,14 @@ new function() { // Injection scope for hit-test functions shared with project
                 }
             }
             Base.splice(children, items, index, 0);
-            var project = this._project,
-                // See #_remove() for an explanation of this:
-                notifySelf = project._changes;
             for (var i = 0, l = items.length; i < l; i++) {
                 var item = items[i],
                     name = item._name;
                 item._parent = this;
-                item._setProject(project, true);
                 // Set the name again to make sure all name lookup structures
                 // are kept in sync.
                 if (name)
                     item.setName(name);
-                if (notifySelf)
-                    item._changed(/*#=*/Change.INSERTION);
             }
             this._changed(/*#=*/Change.CHILDREN);
         } else {
@@ -2660,7 +2409,6 @@ new function() { // Injection scope for hit-test functions shared with project
      */
     _remove: function(notifySelf, notifyParent) {
         var owner = this._getOwner(),
-            project = this._project,
             index = this._index;
         if (owner) {
             // Handle named children separately from index:
@@ -2671,17 +2419,8 @@ new function() { // Injection scope for hit-test functions shared with project
             // and index set to undefined, but the owner is still set,
             // e.g. in #removeChildren():
             if (index != null) {
-                // Only required for layers but not enough to merit an override.
-                if (project._activeLayer === this)
-                    project._activeLayer = this.getNextSibling()
-                            || this.getPreviousSibling();
                 Base.splice(owner._children, null, index, 1);
             }
-            this._installEvents(false);
-            // Notify self of the insertion change. We only need this
-            // notification if we're tracking changes for now.
-            if (notifySelf && project._changes)
-                this._changed(/*#=*/Change.INSERTION);
             // Notify owner of changed children (this can be the project too).
             if (notifyParent)
                 owner._changed(/*#=*/Change.CHILDREN, this);
@@ -2874,16 +2613,6 @@ new function() { // Injection scope for hit-test functions shared with project
     },
 
     /**
-     * Checks whether the item and all its parents are inserted into scene graph
-     * or not.
-     *
-     * @return {Boolean} {@true if the item is inserted into the scene graph}
-     */
-    isInserted: function() {
-        return this._parent ? this._parent.isInserted() : false;
-    },
-
-    /**
      * Checks if this item is above the specified item in the stacking order
      * of the project.
      *
@@ -2970,10 +2699,7 @@ new function() { // Injection scope for hit-test functions shared with project
     isGroupedWith: function(item) {
         var parent = this._parent;
         while (parent) {
-            // Find group parents. Check for parent._parent, since don't want
-            // top level layers, because they also inherit from Group
-            if (parent._parent
-                && /^(Group|Layer|CompoundPath)$/.test(parent._class)
+            if (/^(Group|Layer|CompoundPath)$/.test(parent._class)
                 && item.isDescendant(parent))
                     return true;
             // Keep walking up otherwise
@@ -4229,7 +3955,7 @@ new function() { // Injection scope for hit-test functions shared with project
         // Each time the project gets drawn, it's _updateVersion is increased.
         // Keep the _updateVersion of drawn items in sync, so we have an easy
         // way to know for which selected items we need to draw selection info.
-        var updateVersion = this._updateVersion = this._project._updateVersion;
+        var updateVersion = this._updateVersion = 0;
         // Now bail out if no actual drawing is required.
         if (!this._visible || this._opacity === 0)
             return;

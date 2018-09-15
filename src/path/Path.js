@@ -172,8 +172,7 @@ var Path = PathItem.extend(/** @lends Path# */{
     },
 
     setSegments: function(segments) {
-        var fullySelected = this.isFullySelected(),
-            length = segments && segments.length;
+        var length = segments && segments.length;
         this._segments.length = 0;
         this._segmentSelection = 0;
         // Calculate new curves next time we call getCurves()
@@ -189,10 +188,6 @@ var Path = PathItem.extend(/** @lends Path# */{
             }
             this._add(Segment.readList(segments, 0, {}, length));
         }
-        // Preserve fullySelected state.
-        // TODO: Do we still need this?
-        if (fullySelected)
-            this.setFullySelected(true);
     },
 
     /**
@@ -845,121 +840,6 @@ var Path = PathItem.extend(/** @lends Path# */{
             this._area = area;
         }
         return area;
-    },
-
-    /**
-     * Specifies whether an path is selected and will also return `true` if the
-     * path is partially selected, i.e. one or more of its segments is selected.
-     *
-     * Paper.js draws the visual outlines of selected items on top of your
-     * project. This can be useful for debugging, as it allows you to see the
-     * construction of paths, position of path curves, individual segment points
-     * and bounding boxes of symbol and raster items.
-     *
-     * @bean
-     * @type Boolean
-     * @see Project#selectedItems
-     * @see Segment#selected
-     * @see Point#selected
-     *
-     * @example {@paperscript}
-     * // Selecting an item:
-     * var path = new Path.Circle({
-     *     center: [80, 50],
-     *     radius: 35
-     * });
-     * path.selected = true; // Select the path
-     *
-     * @example {@paperscript}
-     * // A path is selected, if one or more of its segments is selected:
-     * var path = new Path.Circle({
-     *     center: [80, 50],
-     *     radius: 35
-     * });
-     *
-     * // Select the second segment of the path:
-     * path.segments[1].selected = true;
-     *
-     * // If the path is selected (which it is), set its fill color to red:
-     * if (path.selected) {
-     *     path.fillColor = 'red';
-     * }
-     *
-     */
-    /**
-     * Specifies whether the path and all its segments are selected. Cannot be
-     * `true` on an empty path.
-     *
-     * @bean
-     * @type Boolean
-     *
-     * @example {@paperscript}
-     * // A path is fully selected, if all of its segments are selected:
-     * var path = new Path.Circle({
-     *     center: [80, 50],
-     *     radius: 35
-     * });
-     * path.fullySelected = true;
-     *
-     * var path2 = new Path.Circle({
-     *     center: [180, 50],
-     *     radius: 35
-     * });
-     *
-     * // Deselect the second segment of the second path:
-     * path2.segments[1].selected = false;
-     *
-     * // If the path is fully selected (which it is),
-     * // set its fill color to red:
-     * if (path.fullySelected) {
-     *     path.fillColor = 'red';
-     * }
-     *
-     * // If the second path is fully selected (which it isn't, since we just
-     * // deselected its second segment),
-     * // set its fill color to red:
-     * if (path2.fullySelected) {
-     *     path2.fillColor = 'red';
-     * }
-     */
-    isFullySelected: function() {
-        var length = this._segments.length;
-        return this.isSelected() && length > 0 && this._segmentSelection
-                === length * /*#=*/SegmentSelection.ALL;
-    },
-
-    setFullySelected: function(selected) {
-        // No need to call _selectSegments() when selected is false, since
-        // #setSelected() does that for us
-        if (selected)
-            this._selectSegments(true);
-        this.setSelected(selected);
-    },
-
-    setSelection: function setSelection(selection) {
-        // Deselect all segments when path is marked as not selected
-        if (!(selection & /*#=*/ItemSelection.ITEM))
-            this._selectSegments(false);
-        setSelection.base.call(this, selection);
-    },
-
-    _selectSegments: function(selected) {
-        var segments = this._segments,
-            length = segments.length,
-            selection = selected ? /*#=*/SegmentSelection.ALL : 0;
-        this._segmentSelection = selection * length;
-        for (var i = 0; i < length; i++)
-            segments[i]._selection = selection;
-    },
-
-    _updateSelection: function(segment, oldSelection, newSelection) {
-        segment._selection = newSelection;
-        var selection = this._segmentSelection += newSelection - oldSelection;
-        // Set this path as selected in case we have selected segments. Do not
-        // unselect if we're down to 0, as the path itself can still remain
-        // selected even when empty.
-        if (selection > 0)
-            this.setSelected(true);
     },
 
     /**
@@ -1691,16 +1571,14 @@ var Path = PathItem.extend(/** @lends Path# */{
         }
 
         function checkSegmentPoint(seg, pt, name) {
-            if (!options.selected || pt.isSelected()) {
-                var anchor = seg._point;
-                if (pt !== anchor)
-                    pt = pt.add(anchor);
-                if (isCloseEnough(pt, strokePadding)) {
-                    return new HitResult(name, that, {
-                        segment: seg,
-                        point: pt
-                    });
-                }
+            var anchor = seg._point;
+            if (pt !== anchor)
+                pt = pt.add(anchor);
+            if (isCloseEnough(pt, strokePadding)) {
+                return new HitResult(name, that, {
+                    segment: seg,
+                    point: pt
+                });
             }
         }
 

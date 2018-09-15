@@ -604,7 +604,8 @@ Base.exports.PaperScript = function() {
             // Handle it asynchronously
             setTimeout(loadAll);
         } else {
-            DomEvent.add(window, { load: loadAll });
+            // document.addEventListener('load', loadAll);
+            // DomEvent.add(window, { load: loadAll });
         }
     }
 

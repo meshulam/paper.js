@@ -61,10 +61,6 @@ var paper = function(self, undefined) {
 /*#*/ include('item/Group.js');
 /*#*/ include('item/Layer.js');
 /*#*/ include('item/Shape.js');
-/*#*/ include('item/Raster.js');
-/*#*/ include('item/SymbolItem.js');
-/*#*/ include('item/SymbolDefinition.js');
-/*#*/ include('item/HitResult.js');
 
 /*#*/ include('path/Segment.js');
 /*#*/ include('path/SegmentPoint.js');
@@ -80,24 +76,18 @@ var paper = function(self, undefined) {
 /*#*/ include('path/PathFlattener.js');
 /*#*/ include('path/PathFitter.js');
 
-/*#*/ include('text/TextItem.js');
-/*#*/ include('text/PointText.js');
-
 /*#*/ include('style/Color.js');
 /*#*/ include('style/Gradient.js');
 /*#*/ include('style/GradientStop.js');
 /*#*/ include('style/Style.js');
 
 /*#*/ include('dom/DomElement.js');
-/*#*/ include('dom/DomEvent.js');
-
-/*#*/ include('view/View.js');
-/*#*/ include('view/CanvasView.js');
+// /*#*/ include('dom/DomEvent.js');
 
 /*#*/ include('event/Event.js');
-/*#*/ include('event/KeyEvent.js');
-/*#*/ include('event/Key.js');
-/*#*/ include('event/MouseEvent.js');
+// /*#*/ include('event/KeyEvent.js');
+// /*#*/ include('event/Key.js');
+// /*#*/ include('event/MouseEvent.js');
 
 /*#*/ include('tool/ToolEvent.js');
 /*#*/ include('tool/Tool.js');

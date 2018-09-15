@@ -99,10 +99,6 @@ var Style = Base.extend(new function() {
         // Paragraphs
         justification: 'left'
     }),
-    // Defaults for TextItem (override default fillColor to black):
-    textDefaults = Base.set({}, groupDefaults, {
-        fillColor: new Color() // black
-    }),
     flags = {
         strokeWidth: /*#=*/Change.STROKE,
         strokeCap: /*#=*/Change.STROKE,
@@ -126,15 +122,12 @@ var Style = Base.extend(new function() {
         _class: 'Style',
         beans: true,
 
-        initialize: function Style(style, _owner, _project) {
+        initialize: function Style(style, _owner) {
             // We keep values in a separate object that we can iterate over.
             this._values = {};
             this._owner = _owner;
-            this._project = _owner && _owner._project || _project
-                    || paper.project;
             // Use different defaults based on the owner
             this._defaults = !_owner || _owner instanceof Group ? groupDefaults
-                    : _owner instanceof TextItem ? textDefaults
                     : itemDefaults;
             if (style)
                 this.set(style);
@@ -324,16 +317,6 @@ var Style = Base.extend(new function() {
         // offset, or both.
         return !!color && color.alpha > 0 && (this.getShadowBlur() > 0
                 || !this.getShadowOffset().isZero());
-    },
-
-    /**
-     * The view that this style belongs to.
-     *
-     * @bean
-     * @type View
-     */
-    getView: function() {
-        return this._project._view;
     },
 
     // Overrides

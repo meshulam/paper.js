@@ -17,10 +17,12 @@ function cloneAndCompare(item) {
     equals(function() {
         return item.parent == copy.parent;
     }, true);
-    equals(function() {
-        // Cloned items appear above the original.
-        return item.nextSibling == copy;
-    }, true);
+    if (item.parent) {
+        equals(function() {
+            // Cloned items appear above the original.
+            return item.nextSibling == copy;
+        }, true);
+    }
     if (item.name) {
         equals(function() {
             return copy.parent.children[copy.name] == copy;
@@ -33,6 +35,7 @@ function cloneAndCompare(item) {
 
 test('Path#clone()', function() {
     var path = new Path([10, 20], [30, 40]);
+    var group = new Group([path]);
     path.closed = true;
     path.name = 'test';
     path.style = {
@@ -50,7 +53,6 @@ test('Path#clone()', function() {
     path.visible = false;
     path.blendMode = 'multiply';
     path.clipMask = true;
-    path.selected = true;
     cloneAndCompare(path);
 });
 
@@ -70,13 +72,8 @@ test('CompoundPath#clone()', function() {
     cloneAndCompare(compound);
 });
 
-test('Layer#clone()', function() {
-    var path = new Path.Rectangle([200, 200], [100, 100]);
-    cloneAndCompare(paper.project.activeLayer);
-});
-
 test('Layer#clone() - check activeLayer', function() {
-    var project = paper.project,
+    var project = { activeLayer: new Layer() },
         activeLayer = project.activeLayer,
         layer = activeLayer.clone();
     // The active layer should not change when cloning layers.
@@ -101,62 +98,6 @@ test('Group#clone()', function() {
     cloneAndCompare(group);
 });
 
-test('PointText#clone()', function() {
-    var pointText = new PointText(new Point(50, 50));
-    pointText.content = 'test';
-    pointText.position = pointText.position.add(100);
-    pointText.style = {
-        fontFamily: 'serif',
-        fontSize: 20
-    };
-    pointText.justification = 'center';
-    cloneAndCompare(pointText);
-});
-
-test('SymbolItem#clone()', function() {
-    var path = new Path.Circle([150, 150], 60);
-    var definition = new SymbolDefinition(path);
-    var item = new SymbolItem(definition);
-    item.position = [100, 100];
-    item.rotate(90);
-    cloneAndCompare(item);
-});
-
-test('Symbol#clone()', function() {
-    var path = new Path.Circle([150, 150], 60);
-    path.style = {
-        strokeCap: 'round',
-        strokeJoin: 'round',
-        dashOffset: 10,
-        dashArray: [10, 2, 10],
-        fillColor: new Color(0, 0, 1),
-        strokeColor: new Color(0, 0, 1),
-        miterLimit: 5
-    };
-    path.selected = true;
-    var definition = new SymbolDefinition(path);
-    var copy = definition.clone();
-    equals(definition.item, copy.item, 'definition.item');
-    equals(function() {
-        return definition.project == copy.project;
-    }, true);
-});
-
-test('Raster#clone()', function() {
-    var path = new Path.Circle([150, 150], 60);
-    path.style = {
-        fillColor: new Color(0, 0, 1),
-        strokeColor: new Color(0, 0, 1)
-    };
-    var raster = path.rasterize(72);
-    raster.opacity = 0.5;
-    raster.locked = true;
-    raster.visible = false;
-    raster.blendMode = 'multiply';
-    raster.rotate(20).translate(100);
-    cloneAndCompare(raster);
-});
-
 test('Group with clipmask', function() {
     var path = new Path.Circle([100, 100], 30),
         path2 = new Path.Circle([100, 100], 20),
@@ -168,6 +109,7 @@ test('Group with clipmask', function() {
 test('Item#clone() Hierarchy', function() {
     var path1 = new Path.Circle([150, 150], 60);
     var path2 = new Path.Circle([150, 150], 60);
+    var grp = new Group([path1, path2]);
     var clone = path1.clone();
     equals(function() {
         return path2.isAbove(path1);

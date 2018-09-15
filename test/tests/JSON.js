@@ -115,37 +115,6 @@ test('Rectangle testing', function() {
     testExportImportJSON(paper.project);
 });
 
-test('Symbols', function() {
-    var ellipse = new Path.Ellipse({
-        from: [0, 0],
-        to: [200, 100],
-        fillColor: 'red'
-    });
-    var definition = new SymbolDefinition(ellipse);
-    var p1 = definition.place([100, 100]);
-    p1.rotate(45);
-    var p2 = definition.place([300, 200]);
-    p2.rotate(-30);
-
-    testExportImportJSON(paper.project);
-});
-
-test('PointText testing', function() {
-    var text = new PointText(new Point(50, 100));
-    text.fillColor = 'black';
-    text.content = 'This is a test';
-
-    var text = new PointText(new Point(100, 150));
-    text.fillColor = 'red';
-    text.strokeWidth = '4';
-    text.content = 'This is also a test';
-
-    text.rotate(45);
-    text.shear(0.85, 0.15);
-    text.scale(0.85, 2);
-    testExportImportJSON(paper.project);
-});
-
 test('transform test 1', function() {
     var circlePath = new Path.Circle(new Point(280, 100), 25);
     circlePath.strokeColor = 'black';

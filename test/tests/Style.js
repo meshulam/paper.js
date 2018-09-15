@@ -34,27 +34,6 @@ test('Style defaults', function() {
     }, [] + '');
 });
 
-test('Project#currentStyle', function() {
-    paper.project.currentStyle.fillColor = 'black';
-    var path = new Path();
-    equals(path.fillColor, new Color('black'), 'path.fillColor');
-
-    // When changing the current style of the project, the style of
-    // paths created using project.currentStyle should not change.
-    paper.project.currentStyle.fillColor = 'red';
-    equals(path.fillColor, new Color('black'), 'path.fillColor');
-});
-
-test('setting Project#currentStyle to an object', function() {
-    paper.project.currentStyle = {
-        fillColor: 'red',
-        strokeColor: 'green'
-    };
-    var path = new Path();
-    equals(path.fillColor, new Color('red'), 'path.fillColor');
-    equals(path.strokeColor, new Color('green'), 'path.strokeColor');
-});
-
 test('setting Path#style to an object', function() {
     var path = new Path();
     path.strokeWidth = 10;

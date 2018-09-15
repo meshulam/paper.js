@@ -250,20 +250,20 @@ var Raster = Item.extend(/** @lends Raster# */{
         }
 
         this._setImage(image);
-        if (this._loaded) {
-            // Emit load event with a delay, so behavior is the same as when
-            // it's actually loaded and we give the code time to install event.
-            setTimeout(emit, 0);
-        } else if (image) {
-            // Trigger the load event on the image once it's loaded
-            DomEvent.add(image, {
-                load: function(event) {
-                    that._setImage(image);
-                    emit(event);
-                },
-                error: emit
-            });
-        }
+        // if (this._loaded) {
+        //     // Emit load event with a delay, so behavior is the same as when
+        //     // it's actually loaded and we give the code time to install event.
+        //     setTimeout(emit, 0);
+        // } else if (image) {
+        //     // Trigger the load event on the image once it's loaded
+        //     DomEvent.add(image, {
+        //         load: function(event) {
+        //             that._setImage(image);
+        //             emit(event);
+        //         },
+        //         error: emit
+        //     });
+        // }
     },
 
     /**

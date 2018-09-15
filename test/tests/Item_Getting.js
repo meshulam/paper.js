@@ -13,7 +13,7 @@
 QUnit.module('Getting and Matching Items');
 
 test('Item#getItems()', function() {
-    var group = new Group([new Path({ selected: true }), new Raster()]);
+    var group = new Group([new Path({ selected: true })]);
     equals(function() {
         return group.getItems({
             type: 'path'
@@ -44,15 +44,16 @@ test('Item#matches()', function() {
 
 test('Project#getItems()', function() {
     var layer = new Layer();
+    var parent = new Layer([layer]);
 
-    var matches = paper.project.getItems({
+    var matches = parent.getItems({
         class: Layer
     });
     equals(function() {
         return matches.length == 1 && matches[0] == layer;
     }, true);
 
-    var matches = paper.project.getItems({
+    var matches = parent.getItems({
         class: Item
     });
     equals(function() {
@@ -60,7 +61,8 @@ test('Project#getItems()', function() {
     }, true);
 
     var path = new Path();
-    var matches = paper.project.getItems({
+    parent.addChild(path);
+    var matches = parent.getItems({
         class: Path
     });
     equals(function() {
@@ -68,48 +70,20 @@ test('Project#getItems()', function() {
     }, true);
 
     var group = new Group();
-    var matches = paper.project.getItems({
+    parent.addChild(group);
+    var matches = parent.getItems({
         className: 'Group'
     });
     equals(function() {
         return matches.length == 1 && matches[0] === group;
     }, true);
 
-    var matches = paper.project.getItems({
+    var matches = parent.getItems({
         type: 'group'
     });
     equals(function() {
         return matches.length == 1 && matches[0] === group;
     }, true);
-
-    var raster = new Raster();
-    var matches = paper.project.getItems({
-        class: Raster
-    });
-    equals(function() {
-        return matches.length == 1 && matches[0] === raster;
-    }, true);
-
-    equals(function() {
-        return paper.project.getItems({
-            selected: true
-        }).length;
-    }, 0);
-
-    raster.selected = true;
-    equals(function() {
-        return paper.project.getItems({
-            selected: true
-        }).length;
-    }, 2);
-
-    raster.selected = true;
-    equals(function() {
-        return paper.project.getItems({
-            selected: true,
-            class: Raster
-        }).length;
-    }, 1);
 });
 
 test('Project#getItems() with compare function', function() {
@@ -117,8 +91,9 @@ test('Project#getItems() with compare function', function() {
     var path = new Path({
         opacity: 0.5
     });
+    var parent = new Layer([firstPath, path]);
 
-    var items = paper.project.getItems({
+    var items = parent.getItems({
         opacity: function(value) {
             return value < 1;
         }
@@ -133,8 +108,9 @@ test('Project#getItems() with specific property value', function() {
     var decoyPath = new Path({
         opacity: 0.5
     });
+    var parent = new Layer([path, decoyPath]);
 
-    var items = paper.project.getItems({
+    var items = parent.getItems({
         opacity: 1,
         type: 'path'
     });
@@ -151,8 +127,9 @@ test('Project#getItems() with color', function() {
     var decoyPath = new Path({
         fillColor: 'black'
     });
+    var parent = new Layer([path, decoyPath]);
 
-    var items = paper.project.getItems({
+    var items = parent.getItems({
         fillColor: 'red',
         type: 'path'
     });
@@ -162,7 +139,6 @@ test('Project#getItems() with color', function() {
 });
 
 test('Project#getItems() with regex function', function() {
-    var layer = paper.project.activeLayer;
     var stopPath = new Path({
         name: 'stop'
     });
@@ -174,18 +150,18 @@ test('Project#getItems() with regex function', function() {
     var startPath = new Path({
         name: 'starting'
     });
+    var layer = new Layer([stopPath, pausePath, startPath]);
 
-    var items = paper.project.getItems({
+    var items = layer.getItems({
         name: /^start/g
     });
 
-    // console.log(paper.project.activeLayer);
     equals(function() {
         return items.length == 1 && items[0] == startPath;
     }, true);
 
     equals(function() {
-        var items = paper.project.getItems({
+        var items = layer.getItems({
             name: /^st/g
         });
         return items.length == 2;
@@ -193,16 +169,17 @@ test('Project#getItems() with regex function', function() {
 });
 
 test('Project#getItems() empty: true', function() {
-    var layer = new Layer();
     var empty1 = new Path();
     var empty2 = new Path();
+    var layer = new Layer([ empty1, empty2]);
+
 
     equals(function() {
         return layer.children.length;
     }, 2);
 
     equals(function() {
-        return paper.project.getItems({
+        return layer.getItems({
             empty: true
         }).length;
     }, 2);
@@ -214,6 +191,7 @@ test('Project#getItems() overlapping', function() {
         center: [200, 200],
         fillColor: 'red'
     });
+    var project = new Layer([path]);
 
     equals(function() {
         var matches = project.getItems({
@@ -246,6 +224,7 @@ test('Project#getItems() inside', function() {
         center: [200, 200],
         fillColor: 'red'
     });
+    var project = new Layer([path]);
 
     equals(function() {
         var matches = project.getItems({

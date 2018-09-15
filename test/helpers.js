@@ -52,18 +52,11 @@ QUnit.done(function(details) {
     console.error = errorHandler;
 });
 
-var currentProject;
-
 // NOTE: In order to "export" all methods into the shared Prepro.js scope when
 // using node-qunit, we need to define global functions as:
 // `var name = function() {}`. `function name() {}` does not work!
 var test = function(testName, expected) {
     return QUnit.test(testName, function(assert) {
-        // Since tests can be asynchronous, remove the old project before
-        // running the next test.
-        if (currentProject)
-            currentProject.remove();
-        currentProject = new Project();
         expected(assert);
     });
 };
@@ -112,7 +105,6 @@ var equals = function(actual, expected, message, options) {
 // A list of classes that should be identical after their owners were cloned.
 var identicalAfterCloning = {
     Gradient: true,
-    SymbolDefinition: true
 };
 
 // Register a jsDump parser for Base.
@@ -141,6 +133,7 @@ var compareProperties = function(actual, expected, properties, message, options)
 };
 
 var comparePixels = function(actual, expected, message, options) {
+    throw new Error('ComparePixels dead??');
     function rasterize(item, group, resolution) {
         var raster = null;
         if (group) {
@@ -252,7 +245,7 @@ var comparePixels = function(actual, expected, message, options) {
 var compareItem = function(actual, expected, message, options, properties) {
     options = options || {};
     if (options.rasterize) {
-        comparePixels(actual, expected, message, options);
+        // comparePixels(actual, expected, message, options);
     } else if (!actual || !expected) {
         QUnit.strictEqual(actual, expected, message);
     } else {
@@ -276,8 +269,6 @@ var compareItem = function(actual, expected, message, options, properties) {
         var styles = ['fillColor',
                 'strokeColor', 'strokeCap', 'strokeJoin', 'dashArray',
                 'dashOffset', 'miterLimit'];
-        if (expected instanceof TextItem)
-            styles.push('fontSize', 'font', 'leading', 'justification');
         compareProperties(actual.style, expected.style, styles,
                 message + ' (#style)', options);
     }
@@ -421,26 +412,6 @@ var comparators = {
     Shape: function(actual, expected, message, options) {
         compareItem(actual, expected, message, options,
                 ['shape', 'size', 'radius']);
-    },
-
-    PointText: function(actual, expected, message, options) {
-        compareItem(actual, expected, message, options,
-                ['content', 'point']);
-    },
-
-    SymbolItem: function(actual, expected, message, options) {
-        compareItem(actual, expected, message,
-                // Cloning SymbolItems does not result in cloned
-                // SymbolDefinitions
-                options && options.cloned
-                        ? Base.set({}, options, { cloned: false })
-                        : options,
-                ['symbol']);
-    },
-
-    SymbolDefinition: function(actual, expected, message, options) {
-        equals(actual.definition, expected.definition,
-                message + ' (#definition)', options);
     },
 
     Project: function(actual, expected, message, options) {

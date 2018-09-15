@@ -143,7 +143,4 @@ test('new Path.Line({ insert: false })', function() {
     equals(function() {
         return path.parent;
     }, null);
-    equals(function() {
-        return path.isInserted();
-    }, false);
 });

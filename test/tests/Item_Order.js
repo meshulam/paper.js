@@ -19,9 +19,11 @@ test('Item Order', function() {
 
     var circle = new Path.Circle([50, 50], 50);
     circle.name = 'circle';
+    var layer = new Layer([line, circle]);
 
     var group = new Group([circle]);
     group.name = 'group';
+    layer.addChild(group);
 
     equals(function() {
         return circle.isAbove(line);
@@ -61,12 +63,11 @@ test('Item#insertAbove(item) / Item#insertBelow(item)', function() {
 
     function testType(ctor) {
         function testMove(command, indexes) {
-            paper.project.clear();
-            if (ctor !== Layer)
-                new Layer();
             item0 = new ctor();
             item1 = new ctor();
             item2 = new ctor();
+            var contain = new Layer([item0, item1, item2]);
+
             command();
             var str = getFunctionMessage(command);
             var name = item0.className.toLowerCase();
@@ -106,6 +107,7 @@ test('Item#insertChild() with already inserted children', function() {
         item2 = new Group(),
         item3 = new Group(),
         item4 = new Group(),
+        layer = new Layer([item1, item2, item3, item4]);
         newIndex = 1,
         oldIndex = item4.index;
     item4.parent.insertChild(1, item4);

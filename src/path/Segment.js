@@ -144,8 +144,6 @@ var Segment = Base.extend(/** @lends Segment# */{
         new SegmentPoint(point, this, '_point');
         new SegmentPoint(handleIn, this, '_handleIn');
         new SegmentPoint(handleOut, this, '_handleOut');
-        if (selection)
-            this.setSelection(selection);
     },
 
     _serialize: function(options, dictionary) {
@@ -264,56 +262,6 @@ var Segment = Base.extend(/** @lends Segment# */{
     clearHandles: function() {
         this._handleIn._set(0, 0);
         this._handleOut._set(0, 0);
-    },
-
-    getSelection: function() {
-        return this._selection;
-    },
-
-    setSelection: function(selection) {
-        var oldSelection = this._selection,
-            path = this._path;
-        // Set the selection state even if path is not defined yet, to allow
-        // selected segments to be inserted into paths and make JSON
-        // deserialization work.
-        this._selection = selection = selection || 0;
-        // If the selection state of the segment has changed, we need to let
-        // it's path know and possibly add or remove it from
-        // project._selectionItems
-        if (path && selection !== oldSelection) {
-            path._updateSelection(this, oldSelection, selection);
-            // Let path know that we changed something and the view should be
-            // redrawn
-            path._changed(/*#=*/Change.ATTRIBUTE);
-        }
-    },
-
-    _changeSelection: function(flag, selected) {
-        var selection = this._selection;
-        this.setSelection(selected ? selection | flag : selection & ~flag);
-    },
-
-    /**
-     * Specifies whether the segment is selected.
-     *
-     * @bean
-     * @type Boolean
-     *
-     * @example {@paperscript}
-     * var path = new Path.Circle({
-     *     center: [80, 50],
-     *     radius: 40
-     * });
-     *
-     * // Select the third segment point:
-     * path.segments[2].selected = true;
-     */
-    isSelected: function() {
-        return !!(this._selection & /*#=*/SegmentSelection.ALL);
-    },
-
-    setSelected: function(selected) {
-        this._changeSelection(/*#=*/SegmentSelection.ALL, selected);
     },
 
     /**

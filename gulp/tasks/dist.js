@@ -12,24 +12,18 @@
 
 var gulp = require('gulp'),
     del = require('del'),
-    merge = require('merge-stream'),
     zip = require('gulp-zip');
 
-gulp.task('dist', ['build', 'minify', 'docs']);
+gulp.task('dist', ['build', 'minify']);
 
 gulp.task('zip', ['clean:zip', 'dist'], function() {
-    return merge(
-            gulp.src([
-                'dist/paper-full*.js',
-                'dist/paper-core*.js',
-                'dist/node/**/*',
-                'LICENSE.txt',
-                'examples/**/*',
-            ], { base: '.' }),
-            gulp.src([
-                'dist/docs/**/*'
-            ], { base: 'dist' })
-        )
+    return gulp.src([
+            'dist/paper-full*.js',
+            'dist/paper-core*.js',
+            'dist/node/**/*',
+            'LICENSE.txt',
+            'examples/**/*',
+        ], { base: '.' })
         .pipe(zip('paperjs.zip'))
         .pipe(gulp.dest('dist'));
 });

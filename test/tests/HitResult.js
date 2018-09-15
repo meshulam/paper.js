@@ -308,25 +308,6 @@ test('hitting path bounding box', function() {
     });
 });
 
-test('hitting raster bounding box', function() {
-    var path = new Path.Circle({
-        center: [100, 100],
-        radius: 50,
-        fillColor: 'red'
-    });
-    var raster = path.rasterize(72);
-    path.remove();
-
-    testHitResult(paper.project.hitTest(raster.bounds.topLeft, {
-        bounds: true
-    }), {
-        type: 'bounds',
-        item: raster,
-        name: 'top-left',
-        point: path.bounds.topLeft
-    });
-});
-
 test('hitting guides', function() {
     var path = new Path.Circle({
         center: [100, 100],
@@ -349,28 +330,6 @@ test('hitting guides', function() {
 
     equals(result && result.item, path,
             'The path should be returned, because it is a guide.');
-});
-
-test('hitting raster items', function() {
-    // Create a path, rasterize it and then remove the path:
-    var path = new Path.Rectangle(new Point(), new Size(320, 240));
-    path.fillColor = 'red';
-    var raster = path.rasterize(72);
-
-    var hitResult = paper.project.hitTest(new Point(160, 120));
-
-    equals(function() {
-        return hitResult && hitResult.item == raster;
-    }, true, 'Hit raster item before moving');
-
-    // Move the raster:
-    raster.translate(100, 100);
-
-    var hitResult = paper.project.hitTest(new Point(160, 120));
-
-    equals(function() {
-        return hitResult && hitResult.item == raster;
-    }, true, 'Hit raster item after moving');
 });
 
 test('hitting path with a text item in the project', function() {
@@ -460,20 +419,6 @@ test('hit-testing of items that come after a transformed group.', function() {
     equals(function() {
         return hitResult && hitResult.item;
     }, path1, 'After moving group before path1, hit-testing path1 for point1 should give us path1.');
-});
-
-test('hit-testing of placed symbols.', function() {
-    var point = new Point(100, 100);
-
-    var path = new Path.Circle([0, 0], 20);
-    path.fillColor = 'black';
-    var definition = new SymbolDefinition(path);
-    var placedItem = definition.place(point);
-    var hitResult = placedItem.hitTest(point);
-    equals(function() {
-        return hitResult && hitResult.item == placedItem;
-    }, true, 'hitResult.item should be placedItem');
-
 });
 
 test('hit-testing the corner of a rectangle with miter stroke.', function() {
