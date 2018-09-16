@@ -10,6 +10,24 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import Emitter from '../core/Emitter';
+import Matrix from '../basic/Matrix';
+import Point, { LinkedPoint } from '../basic/Point';
+import { LinkedRectangle } from '../basic/Rectangle';
+import { Change, ChangeFlag } from './ChangeFlag';
+import UID from '../util/UID';
+import Style from '../style/Style';
+import Size from '../basic/Size';
+
+
+const DEFAULT_SETTINGS ={
+    applyMatrix: true,
+    insertItems: true,
+    handleSize: 4,
+    hitTolerance: 0
+};
+
 /**
  * @name Item
  *
@@ -196,7 +214,7 @@ new function() { // Injection scope for various item event handlers
         // Serialize style fields, but only if they differ from defaults.
         // Do not serialize styles on Groups and Layers, since they just unify
         // their children's own styles.
-        if (!(this instanceof Group))
+        if (!(this.instanceOf('Group')))
             serialize(this._style._defaults);
         // There is no compact form for Item serialization, we always keep the
         // class.
@@ -810,7 +828,7 @@ new function() { // Injection scope for various item event handlers
     beans: true,
 
     getBounds: function(matrix, options) {
-        var hasMatrix = options || matrix instanceof Matrix,
+        var hasMatrix = options || (matrix && matrix.instanceOf('Matrix')),
             opts = Base.set({}, hasMatrix ? options : matrix,
                     this._boundsOptions);
         // We can only cache the bounds if the path uses stroke-scaling, or if
@@ -1320,7 +1338,7 @@ new function() { // Injection scope for various item event handlers
     getLayer: function() {
         var parent = this;
         while (parent = parent._parent) {
-            if (parent instanceof Layer)
+            if (parent.instanceOf('Layer'))
                 return parent;
         }
         return null;
@@ -1796,7 +1814,7 @@ new function() { // Injection scope for various item event handlers
      * @return {Boolean}
      */
     intersects: function(item, _matrix) {
-        if (!(item instanceof Item))
+        if (!(item.instanceOf('Item')))
             return false;
         // Tell getIntersections() to return as soon as some intersections are
         // found, because all we care for here is there are some or none:
@@ -1963,7 +1981,7 @@ new function() { // Injection scope for hit-test functions shared with project
                 // Support legacy Item#type property to match hyphenated
                 // class-names.
                 || options.type && options.type !== Base.hyphenate(this._class)
-                || options.class && !(this instanceof options.class)),
+                || options.class && !(this.instanceOf(options.class.getClassName()))),
             match = options.match,
             that = this,
             bounds,
@@ -4193,19 +4211,19 @@ new function() { // Injection scope for hit-test functions shared with project
                 ctx.lineCap = strokeCap;
             if (miterLimit)
                 ctx.miterLimit = miterLimit;
-            if (paper.support.nativeDash) {
-                var dashArray = style.getDashArray(),
-                    dashOffset = style.getDashOffset();
-                if (dashArray && dashArray.length) {
-                    if ('setLineDash' in ctx) {
-                        ctx.setLineDash(dashArray);
-                        ctx.lineDashOffset = dashOffset;
-                    } else {
-                        ctx.mozDash = dashArray;
-                        ctx.mozDashOffset = dashOffset;
-                    }
-                }
-            }
+            // if (paper.support.nativeDash) {      // MMTODO: paper.support
+            //     var dashArray = style.getDashArray(),
+            //         dashOffset = style.getDashOffset();
+            //     if (dashArray && dashArray.length) {
+            //         if ('setLineDash' in ctx) {
+            //             ctx.setLineDash(dashArray);
+            //             ctx.lineDashOffset = dashOffset;
+            //         } else {
+            //             ctx.mozDash = dashArray;
+            //             ctx.mozDashOffset = dashOffset;
+            //         }
+            //     }
+            // }
         }
         if (style.hasShadow()) {
             // In Canvas, shadows unfortunately ignore all transformations
@@ -4374,7 +4392,7 @@ new function() { // Injection scope for hit-test functions shared with project
         var parent = this._parent;
         // For compound-paths, use the _updateVersion of the parent, because the
         // shape gets drawn at once at might get cached (e.g. Path2D soon).
-        if (parent instanceof CompoundPath)
+        if (parent.instanceOf('CompoundPath'))
             return parent._isUpdated(updateVersion);
         // In case a parent is visible but isn't drawn (e.g. opacity == 0), the
         // _updateVersion of all its children will not be updated, but the
@@ -4599,3 +4617,5 @@ new function() { // Injection scope for hit-test functions shared with project
         return this;
     }
 }));
+
+export default Item;

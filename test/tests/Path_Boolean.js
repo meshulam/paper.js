@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+
 QUnit.module('Path Boolean Operations');
 
 function testOperations(path1, path2, results) {

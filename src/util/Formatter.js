@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+
 /**
  * @name Formatter
  * @class
@@ -59,3 +61,5 @@ var Formatter = Base.extend(/** @lends Formatter# */{
 });
 
 Formatter.instance = new Formatter();
+
+export default Formatter;

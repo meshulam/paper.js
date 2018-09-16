@@ -23,7 +23,11 @@
  * console.log(point.x); // 10
  * console.log(point.y); // 5
  */
-var Point = Base.extend(/** @lends Point# */{
+import Base from '../core/Base';
+import Numerical from '../util/Numerical';
+import Formatter from '../util/Formatter';
+
+const Point = Base.extend(/** @lends Point# */{
     _class: 'Point',
     // Tell Base.read that the Point constructor supports reading with index
     _readIndex: true,
@@ -1074,3 +1078,6 @@ var LinkedPoint = Point.extend({
         return this._setter === 'setPosition' ? /*#=*/ItemSelection.POSITION : 0;
     }
 });
+
+export default Point;
+export { LinkedPoint };

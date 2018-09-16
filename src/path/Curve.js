@@ -10,6 +10,16 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import Numerical from '../util/Numerical';
+import Point from '../basic/Point';
+import CurveLocation from './CurveLocation';
+import Segment from './Segment';
+
+export const CURVE_EVALUATE_METHODS = [
+    'getPoint', 'getTangent', 'getNormal', 'getWeightedTangent', 'getWeightedNormal', 'getCurvature',
+];
+
 /**
  * @name Curve
  *
@@ -1356,9 +1366,7 @@ statics: /** @lends Curve */{
      */
 },
 new function() { // Injection scope for various curve evaluation methods
-    var methods = ['getPoint', 'getTangent', 'getNormal', 'getWeightedTangent',
-        'getWeightedNormal', 'getCurvature'];
-    return Base.each(methods,
+    return Base.each(CURVE_EVALUATE_METHODS,
         function(name) {
             // NOTE: (For easier searching): This loop produces:
             // getPointAt, getTangentAt, getNormalAt, getWeightedTangentAt,
@@ -1375,10 +1383,6 @@ new function() { // Injection scope for various curve evaluation methods
             this[name + 'AtTime'] = function(time) {
                 return Curve[name](this.getValues(), time);
             };
-        }, {
-            statics: {
-                _evaluateMethods: methods
-            }
         }
     );
 },
@@ -2256,3 +2260,5 @@ new function() { // Scope for bezier intersection using fat-line clipping
         }
     };
 });
+
+export default Curve;

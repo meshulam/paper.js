@@ -38,3 +38,5 @@ var UID = {
         }
     }
 };
+
+export default UID;

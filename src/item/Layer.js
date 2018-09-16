@@ -10,6 +10,7 @@
  * All rights reserved.
  */
 
+import Group from './Group';
 /**
  * @name Layer
  *
@@ -95,3 +96,5 @@ var Layer = Group.extend(/** @lends Layer# */{
     _hitTestSelf: function() {
     }
 });
+
+export default Layer;

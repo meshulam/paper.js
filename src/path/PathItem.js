@@ -9,6 +9,12 @@
  *
  * All rights reserved.
  */
+import Base from '../core/Base';
+import Size from '../basic/Size';
+import Item from '../item/Item';
+import Numerical from '../util/Numerical';
+import Segment from './Segment';
+import { Change } from '../item/ChangeFlag';
 
 /**
  * @name PathItem
@@ -1104,3 +1110,5 @@ var PathItem = Item.extend(/** @lends PathItem# */{
      * @param {Point} to the destination point of the newly added curve
      */
 });
+
+export default PathItem;

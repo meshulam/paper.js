@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+
 // TODO: Support midPoint? (initial tests didn't look nice)
 /**
  * @name GradientStop
@@ -191,3 +193,5 @@ var GradientStop = Base.extend(/** @lends GradientStop# */{
                 || false;
     }
 });
+
+export default GradientStop;

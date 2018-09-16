@@ -56,3 +56,5 @@ var Change = {
     PIXELS: ChangeFlag.PIXELS | ChangeFlag.APPEARANCE,
     VIEW: ChangeFlag.VIEW | ChangeFlag.APPEARANCE
 };
+
+export { ChangeFlag, Change };

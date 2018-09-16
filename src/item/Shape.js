@@ -10,6 +10,10 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import Item from './item';
+import Point from '../basic/Point';
+import Size, { LinkedSize } from '../basic/Size';
 /**
  * @name Shape
  *
@@ -590,3 +594,5 @@ statics: new function() {
         }
     };
 }});
+
+export default Shape;

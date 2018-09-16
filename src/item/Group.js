@@ -10,6 +10,9 @@
  * All rights reserved.
  */
 
+import Item from './Item';
+import { ChangeFlag } from './ChangeFlag';
+
 /**
  * @name Group
  *
@@ -205,3 +208,5 @@ var Group = Item.extend(/** @lends Group# */{
         }
     }
 });
+
+export default Group;

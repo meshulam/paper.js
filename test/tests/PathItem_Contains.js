@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+
 QUnit.module('PathItem Contains');
 
 function testPoint(item, point, inside, message) {

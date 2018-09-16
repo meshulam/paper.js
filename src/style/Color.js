@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+
 /**
  * @name Color
  *
@@ -1303,3 +1305,5 @@ new function() {
          */
     });
 });
+
+export default Color;

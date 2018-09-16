@@ -10,6 +10,7 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
 QUnit.module('Segment');
 
 test('new Segment()', function() {

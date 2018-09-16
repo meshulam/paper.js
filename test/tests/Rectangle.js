@@ -10,6 +10,9 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+import { Rectangle, Point, Size } from '../../src';
+
 QUnit.module('Rectangle');
 
 test('new Rectangle(Point, Size);', function() {

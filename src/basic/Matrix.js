@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import Point from './Point';
 // Based on goog.graphics.AffineTransform, as part of the Closure Library.
 // Copyright 2008 The Closure Library Authors. All Rights Reserved.
 //
@@ -832,3 +834,5 @@ var Matrix = Base.extend(/** @lends Matrix# */{
         this._changed();
     };
 }, {}));
+
+export default Matrix

@@ -19,3 +19,5 @@ var SegmentSelection = {
     HANDLE_OUT: 4,
     ALL: 1 | 2 | 4 // POINT | HANDLE_IN | HANDLE_OUT
 };
+
+export default SegmentSelection;

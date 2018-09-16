@@ -10,14 +10,22 @@
  * All rights reserved.
  */
 
+import Base from 'straps';
+
 /**
  * @name Base
  * @class
  * @private
  */
 // Extend Base with utility functions used across the library.
+export function instanceOf(obj, clazz) {
+    return obj._inheritance && obj._inheritance.includes(clazz);
+}
+
 Base.inject(/** @lends Base# */{
     enumerable: false,
+    _class: 'Base',
+    _inheritance: ['Base'],
 
     /**
      * Renders base objects to strings in object literal notation.
@@ -46,6 +54,10 @@ Base.inject(/** @lends Base# */{
      */
     getClassName: function() {
         return this._class || '';
+    },
+
+    instanceOf: function(clazz) {
+        return instanceOf(this, clazz);
     },
 
     /**
@@ -109,6 +121,7 @@ statics: /** @lends Base */{
         // for deserialization and injection into PaperScope.
         var res = extend.base.apply(this, arguments),
             name = res.prototype._class;
+        res.prototype._inheritance = this.prototype._inheritance.concat(res.prototype._class);
         if (name && !Base.exports[name])
             Base.exports[name] = res;
         return res;
@@ -632,3 +645,5 @@ statics: /** @lends Base */{
         return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
     }
 }});
+
+export default Base;

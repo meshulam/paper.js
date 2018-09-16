@@ -10,6 +10,9 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+import Numerical from '../../src/util/Numerical';
+
 QUnit.module('Numerical');
 
 test('Numerical.solveQuadratic()', function() {

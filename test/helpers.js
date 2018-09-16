@@ -10,32 +10,34 @@
  * All rights reserved.
  */
 
+import { Base } from '../src/index';
+
 var isNode = typeof global === 'object',
     isPhantom = typeof window === 'object' && !!window.callPhantom,
     scope;
 
-if (isNode) {
-    scope = global;
-    // Resemble.js needs the Image constructor global.
-    global.Image = paper.window.Image;
-} else {
-    scope = window;
-    // This is only required when running in the browser:
-    // Until window.history.pushState() works when running locally, we need to
-    // trick qunit into thinking that the feature is not present. This appears
-    // to work...
-    // TODO: Ideally we should fix this in QUnit instead.
-    delete window.history;
-    window.history = {};
-    QUnit.begin(function() {
-        if (QUnit.urlParams.hidepassed) {
-            document.getElementById('qunit-tests').className += ' hidepass';
-        }
-    });
-}
+// if (isNode) {
+//     scope = global;
+//     // Resemble.js needs the Image constructor global.
+//     global.Image = paper.window.Image;
+// } else {
+//     scope = window;
+//     // This is only required when running in the browser:
+//     // Until window.history.pushState() works when running locally, we need to
+//     // trick qunit into thinking that the feature is not present. This appears
+//     // to work...
+//     // TODO: Ideally we should fix this in QUnit instead.
+//     delete window.history;
+//     window.history = {};
+//     QUnit.begin(function() {
+//         if (QUnit.urlParams.hidepassed) {
+//             document.getElementById('qunit-tests').className += ' hidepass';
+//         }
+//     });
+// }
 
 // The unit-tests expect the paper classes to be global.
-paper.install(scope);
+// paper.install(scope);
 
 // Override console.error, so that we can catch errors that are only logged to
 // the console.
@@ -550,3 +552,13 @@ var compareSVG = function(done, actual, expected, message, options) {
         compare();
     }
 };
+
+export {
+    isNode,
+    isPhantom,
+    compareSVG,
+    compareItem,
+    equals,
+    test,
+}
+

@@ -10,6 +10,11 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import SegmentPoint from './SegmentPoint';
+import Point from '../basic/Point';
+import { Change } from '../item/ChangeFlag';
+
 /**
  * @name Segment
  *
@@ -685,3 +690,5 @@ var Segment = Base.extend(/** @lends Segment# */{
         return coords;
     }
 });
+
+export default Segment;

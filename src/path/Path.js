@@ -10,6 +10,22 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import Numerical from '../util/Numerical';
+import PathItem from './PathItem';
+import CompoundPath from './CompoundPath'
+import Segment from './Segment';
+import Curve, { CURVE_EVALUATE_METHODS } from './Curve';
+import Rectangle from '../basic/Rectangle';
+import Point from '../basic/Point';
+import { ChangeFlag, Change } from '../item/ChangeFlag';
+import Item from '../item/Item';
+import Line from '../basic/Line';
+import PathFitter from './PathFitter';
+import PathFlattener from './PathFlattener';
+import Shape from '../item/Shape';
+import Size from '../basic/Size';
+
 /**
  * @name Path
  *
@@ -1817,7 +1833,7 @@ var Path = PathItem.extend(/** @lends Path# */{
 
     // TODO: intersects(item)
     // TODO: contains(item)
-}, Base.each(Curve._evaluateMethods,
+}, Base.each(CURVE_EVALUATE_METHODS,
     function(name) {
         // NOTE: (For easier searching): This loop produces:
         // getPointAt, getTangentAt, getNormalAt, getWeightedTangentAt,
@@ -2902,3 +2918,5 @@ statics: {
         return new Rectangle(x1, y1, x2 - x1, y2 - y1);
     }
 }});
+
+export default Path;

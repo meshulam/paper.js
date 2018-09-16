@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import { isNode, test, equals } from '../helpers';
+
 QUnit.module('SvgImport');
 
 test('Import SVG line', function() {

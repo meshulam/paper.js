@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+
 QUnit.module('Path Constructors');
 
 test('new Path.Rectangle([50, 50], [100, 100])', function() {
