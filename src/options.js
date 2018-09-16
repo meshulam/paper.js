@@ -32,6 +32,4 @@ var __options = {
     paperScript: true
 };
 
-// Export for use in Gulp.js
-if (typeof module !== 'undefined')
-    module.exports = __options;
+export default __options;

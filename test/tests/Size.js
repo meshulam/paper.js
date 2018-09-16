@@ -10,6 +10,10 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+import Size from '../../src/basic/Size';
+import Point from '../../src/basic/Point';
+
 QUnit.module('Size');
 
 test('new Size(10, 20)', function() {

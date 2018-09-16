@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+
 /**
  * @name Gradient
  *
@@ -203,3 +205,5 @@ var Gradient = Base.extend(/** @lends Gradient# */{
         return false;
     }
 });
+
+export default Gradient;

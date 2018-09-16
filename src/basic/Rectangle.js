@@ -10,6 +10,11 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import Point, { LinkedPoint } from './Point';
+import Size, { LinkedSize } from './Size';
+import Formatter from '../util/Formatter';
+
 /**
  * @name Rectangle
  *
@@ -964,3 +969,6 @@ new function() {
         })
     );
 });
+
+export default Rectangle;
+export { LinkedRectangle };

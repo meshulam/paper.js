@@ -10,6 +10,10 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import Formatter from '../util/Formatter';
+import Numerical from '../util/Numerical';
+
 /**
  * @name Size
  *
@@ -588,3 +592,6 @@ var LinkedSize = Size.extend({
         this._owner[this._setter](this);
     }
 });
+
+export default Size;
+export { LinkedSize };

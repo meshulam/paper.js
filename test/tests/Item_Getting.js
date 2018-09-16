@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+
 QUnit.module('Getting and Matching Items');
 
 test('Item#getItems()', function() {

@@ -10,6 +10,7 @@
  * All rights reserved.
  */
 
+import Base from './Base';
 /**
  * @name Emitter
  * @namespace
@@ -171,3 +172,5 @@ var Emitter = {
         }
     }
 };
+
+export default Emitter;

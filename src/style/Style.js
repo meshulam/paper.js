@@ -10,6 +10,12 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import Point from '../basic/Point';
+import { Change } from '../item/ChangeFlag';
+import Item from '../item/Item';
+import Group from '../item/Group';
+
 /**
  * @name Style
  *
@@ -67,39 +73,44 @@
  * };
  *
  */
+
+// Defaults for items without text-styles (PathItem, Shape, Raster, ...):
+const ITEM_DEFAULTS = {
+    // Paths
+    fillColor: null,
+    fillRule: 'nonzero',
+    strokeColor: null,
+    strokeWidth: 1,
+    strokeCap: 'butt',
+    strokeJoin: 'miter',
+    strokeScaling: true,
+    miterLimit: 10,
+    dashOffset: 0,
+    dashArray: [],
+    // Shadows
+    shadowColor: null,
+    shadowBlur: 0,
+    shadowOffset: 0,      // MMTODO: can be plain value?
+    // Selection
+    selectedColor: null
+};
+
+// Defaults for Group, Layer and Project (anything item that allows nesting
+// needs to be able to pass down text styles as well):
+const GROUP_DEFAULTS = Object.assign({}, ITEM_DEFAULTS, {
+    // Characters
+    fontFamily: 'sans-serif',
+    fontWeight: 'normal',
+    fontSize: 12,
+    leading: null,
+    // Paragraphs
+    justification: 'left'
+});
+
+
+
 var Style = Base.extend(new function() {
-    // Defaults for items without text-styles (PathItem, Shape, Raster, ...):
-    var itemDefaults = {
-        // Paths
-        fillColor: null,
-        fillRule: 'nonzero',
-        strokeColor: null,
-        strokeWidth: 1,
-        strokeCap: 'butt',
-        strokeJoin: 'miter',
-        strokeScaling: true,
-        miterLimit: 10,
-        dashOffset: 0,
-        dashArray: [],
-        // Shadows
-        shadowColor: null,
-        shadowBlur: 0,
-        shadowOffset: new Point(),
-        // Selection
-        selectedColor: null
-    },
-    // Defaults for Group, Layer and Project (anything item that allows nesting
-    // needs to be able to pass down text styles as well):
-    groupDefaults = Base.set({}, itemDefaults, {
-        // Characters
-        fontFamily: 'sans-serif',
-        fontWeight: 'normal',
-        fontSize: 12,
-        leading: null,
-        // Paragraphs
-        justification: 'left'
-    }),
-    flags = {
+    var flags = {
         strokeWidth: /*#=*/Change.STROKE,
         strokeCap: /*#=*/Change.STROKE,
         strokeJoin: /*#=*/Change.STROKE,
@@ -127,8 +138,8 @@ var Style = Base.extend(new function() {
             this._values = {};
             this._owner = _owner;
             // Use different defaults based on the owner
-            this._defaults = !_owner || _owner instanceof Group ? groupDefaults
-                    : itemDefaults;
+            this._defaults = !_owner || _owner.instanceOf('Group') ? GROUP_DEFAULTS
+                    : ITEM_DEFAULTS;
             if (style)
                 this.set(style);
         }
@@ -136,7 +147,7 @@ var Style = Base.extend(new function() {
 
     // Iterate over groupDefaults to inject getters / setters, to cover all
     // properties
-    Base.each(groupDefaults, function(value, key) {
+    Base.each(GROUP_DEFAULTS, function(value, key) {
         var isColor = /Color$/.test(key),
             isPoint = key === 'shadowOffset',
             part = Base.capitalize(key),
@@ -158,7 +169,7 @@ var Style = Base.extend(new function() {
                 children = owner && owner._children;
             // Only unify styles on children of Groups, excluding CompoundPaths.
             if (children && children.length > 0
-                    && !(owner instanceof CompoundPath)) {
+                    && !(owner.instanceOf('CompoundPath'))) {
                 for (var i = 0, l = children.length; i < l; i++)
                     children[i]._style[set](value);
             } else if (key in this._defaults) {
@@ -197,7 +208,7 @@ var Style = Base.extend(new function() {
             // they all have the same style.
             // If true is passed for _dontMerge, don't merge children styles
             if (key in this._defaults && (!children || !children.length
-                    || _dontMerge || owner instanceof CompoundPath)) {
+                    || _dontMerge || owner.instanceOf('CompoundPath'))) {
                 var value = this._values[key];
                 if (value === undefined) {
                     value = this._defaults[key];
@@ -240,20 +251,7 @@ var Style = Base.extend(new function() {
         };
     });
 
-    // Create aliases for deprecated properties. The lookup table contains the
-    // part after 'get' / 'set':
-    // TODO: Remove once deprecated long enough, after December 2016.
-    Base.each({
-        Font: 'FontFamily',
-        WindingRule: 'FillRule'
-    }, function(value, key) {
-        var get = 'get' + key,
-            set = 'set' + key;
-        fields[get] = item[get] = '#get' + value;
-        fields[set] = item[set] = '#set' + value;
-    });
-
-    Item.inject(item);
+    // Item.inject(item);       // MMTODO: can do without injected accessors?
     return fields;
 }, /** @lends Style# */{
     set: function(style) {
@@ -660,3 +658,5 @@ var Style = Base.extend(new function() {
      * @default 'left'
      */
 });
+
+export default Style;

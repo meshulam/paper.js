@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import PathItem from './PathItem';
 /**
  * @name CompoundPath
  *
@@ -124,11 +126,11 @@ var CompoundPath = PathItem.extend(/** @lends CompoundPath# */{
             var item = list[i];
             // Clone the list array before modifying it, as it may be a passed
             // children array from another item.
-            if (list === items && !(item instanceof Path))
+            if (list === items && !(item.instanceOf('Path')))
                 list = Base.slice(list);
             if (Array.isArray(item)) {
                 list[i] = new Path({ segments: item, insert: false });
-            } else if (item instanceof CompoundPath) {
+            } else if (item.instanceOf('CompoundPath')) {
                 list.splice.apply(list, [i, 1].concat(item.removeChildren()));
                 item.remove();
             }
@@ -394,3 +396,5 @@ new function() { // Injection scope for PostScript-like drawing functions
         return res;
     };
 }, {}));
+
+export default CompoundPath;

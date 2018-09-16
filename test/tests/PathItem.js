@@ -10,6 +10,7 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
 QUnit.module('PathItem');
 
 test('PathItem#create() with SVG path-data (#1101)', function() {

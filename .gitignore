@@ -3,3 +3,5 @@
 /dist/*
 /dist/*.min.js
 /dist/paperjs.zip
+/.cache
+yarn-error.log

@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+
 QUnit.module('HitResult');
 
 test('Hit-testing options', function() {

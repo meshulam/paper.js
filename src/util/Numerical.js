@@ -403,3 +403,5 @@ var Numerical = new function() {
         }
     };
 };
+
+export default Numerical;

@@ -9,7 +9,8 @@
  *
  * All rights reserved.
  */
-
+import Base from '../core/Base';
+import Curve, { CURVE_EVALUATE_METHODS } from './Curve';
 /**
  * @name PathFlattener
  * @class
@@ -157,7 +158,7 @@ var PathFlattener = Base.extend({
             ctx.bezierCurveTo.apply(ctx, curve.slice(2));
         }
     }
-}, Base.each(Curve._evaluateMethods,
+}, Base.each(CURVE_EVALUATE_METHODS,
     function(name) {
         this[name + 'At'] = function(offset) {
             var param = this._get(offset);
@@ -166,3 +167,4 @@ var PathFlattener = Base.extend({
     }, {})
 );
 
+export default PathFlattener;

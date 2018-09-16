@@ -9,7 +9,9 @@
  *
  * All rights reserved.
  */
-
+import Base from '../core/Base';
+import Numerical from '../util/Numerical';
+import Curve, { CURVE_EVALUATE_METHODS } from './Curve';
 /**
  * @name CurveLocation
  *
@@ -511,7 +513,7 @@ var CurveLocation = Base.extend(/** @lends CurveLocation# */{
     hasOverlap: function() {
         return !!this._overlap;
     }
-}, Base.each(Curve._evaluateMethods, function(name) {
+}, Base.each(CURVE_EVALUATE_METHODS, function(name) {
     // Produce getters for #getTangent() / #getNormal() / #getCurvature()
     // NOTE: (For easier searching): This loop produces:
     // getPointAt, getTangentAt, getNormalAt, getWeightedTangentAt,
@@ -605,3 +607,5 @@ new function() { // Scope for statics
         }
     }};
 });
+
+export default CurveLocation;

@@ -10,6 +10,9 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+import { Base, Point, Matrix } from '../../src';
+
 QUnit.module('Matrix');
 
 test('Decomposition: rotate()', function() {

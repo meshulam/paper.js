@@ -9,6 +9,8 @@
  *
  * All rights reserved.
  */
+import { test, equals } from '../helpers';
+import { Size, Group, Segment, Path, Point } from '../../src';
 
 QUnit.module('Path');
 
@@ -96,9 +98,11 @@ test('Path#join(path)', function() {
     path2.add(10, 0);
     path2.add(20, 10);
 
+    var grp = new Group([path1, path2]);
+
     path1.join(path2);
     equals(path1.segments.toString(), '{ point: { x: 0, y: 0 } },{ point: { x: 10, y: 0 } },{ point: { x: 20, y: 10 } }');
-    equals(function() { return paper.project.activeLayer.children.length; }, 1);
+    equals(function() { return grp.children.length; }, 1);
 
     var path1 = new Path();
     path1.add(0, 0);
@@ -160,6 +164,8 @@ test('Path#remove()', function() {
     path.add(20, 0);
     path.add(30, 0);
 
+    var grp = new Group([path]);
+
     path.removeSegment(0);
     equals(function() {
         return path.segments.length;
@@ -178,7 +184,7 @@ test('Path#remove()', function() {
     path.remove();
 
     equals(function() {
-        return paper.project.activeLayer.children.length;
+        return grp.children.length;
     }, 0);
 });
 
@@ -312,7 +318,7 @@ test('Path#flatten(maxDistance)', function() {
 });
 
 test('Path#curves after removing a segment - 1', function() {
-    var path = new paper.Path([0, 0], [1, 1], [2, 2]);
+    var path = new Path([0, 0], [1, 1], [2, 2]);
     var prevCurves = path.curves.slice();
 
     equals(function() {
@@ -341,7 +347,7 @@ test('Path#curves after removing a segment - 1', function() {
 });
 
 test('Path#curves after removing a segment - 2', function() {
-    var path = new paper.Path([0, 0], [1, 1], [2, 2]);
+    var path = new Path([0, 0], [1, 1], [2, 2]);
 
     equals(function() {
         return path.curves.length;

@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+
 QUnit.module('Curve');
 
 function testClassify(curve, expeced, message) {

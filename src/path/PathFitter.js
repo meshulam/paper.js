@@ -15,6 +15,10 @@
 // from "Graphics Gems", Academic Press, 1990
 // Modifications and optimizations of original algorithm by Juerg Lehni.
 
+import Base from '../core/Base';
+import Numerical from '../util/Numerical';
+import Segment from './Segment';
+
 /**
  * @name PathFitter
  * @class
@@ -280,3 +284,5 @@ var PathFitter = Base.extend({
         };
     }
 });
+
+export default PathFitter;

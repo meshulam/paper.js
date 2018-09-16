@@ -10,6 +10,10 @@
  * All rights reserved.
  */
 
+import Base from '../core/Base';
+import Point from './Point';
+import Numerical from '../util/Numerical';
+
 /**
  * @name Line
  *
@@ -207,3 +211,5 @@ var Line = Base.extend(/** @lends Line# */{
         }
     }
 });
+
+export default Line;

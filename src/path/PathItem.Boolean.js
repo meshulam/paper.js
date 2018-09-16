@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import PathItem from './PathItem';
+
 /*
  * Boolean Geometric Path Operations
  *
@@ -1337,3 +1339,5 @@ PathItem.inject(new function() {
         }
     };
 });
+
+export default PathItem;

@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+
 QUnit.module('Layer');
 
 test('#previousSibling / #nextSibling', function() {
