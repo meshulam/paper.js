@@ -10,8 +10,10 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
-import Point from './Point';
+import { Base } from '../core/Base';
+import { Point } from './Point';
+import { Rectangle } from './Rectangle';
+
 // Based on goog.graphics.AffineTransform, as part of the Closure Library.
 // Copyright 2008 The Closure Library Authors. All Rights Reserved.
 //
@@ -40,7 +42,7 @@ import Point from './Point';
  * knowledge of the underlying matrix (as opposed to say simply performing
  * matrix multiplication).
  */
-var Matrix = Base.extend(/** @lends Matrix# */{
+export const Matrix = Base.extend(/** @lends Matrix# */{
     _class: 'Matrix',
 
     /**

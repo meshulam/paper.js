@@ -10,15 +10,14 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
 import Numerical from '../util/Numerical';
-import Point from '../basic/Point';
-import CurveLocation from './CurveLocation';
-import Segment from './Segment';
 
-export const CURVE_EVALUATE_METHODS = [
-    'getPoint', 'getTangent', 'getNormal', 'getWeightedTangent', 'getWeightedNormal', 'getCurvature',
-];
+import { Base } from '../core/Base';
+import { Point } from '../basic/Point';
+import { CurveLocation, CURVE_EVALUATE_METHODS } from './CurveLocation';
+import { Segment } from './Segment';
+
+export { CURVE_EVALUATE_METHODS } from './CurveLocation';
 
 /**
  * @name Curve
@@ -34,7 +33,7 @@ export const CURVE_EVALUATE_METHODS = [
  * convenient ways to work with parts of the path, finding lengths, positions or
  * tangents at given offsets.
  */
-var Curve = Base.extend(/** @lends Curve# */{
+export const Curve = Base.extend(/** @lends Curve# */{
     _class: 'Curve',
     // Enforce creation of beans, as some bean getters have hidden parameters.
     // See #getValues() below.

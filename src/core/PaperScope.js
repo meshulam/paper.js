@@ -10,6 +10,11 @@
  * All rights reserved.
  */
 
+import { Base } from './Base';
+import { CanvasProvider } from '../canvas/CanvasProvider';
+import { BlendMode } from '../canvas/BlendMode';
+import Options from '../options'
+
 /**
  * @name PaperScope
  *
@@ -32,7 +37,7 @@
  * The global {@link paper} object is simply a reference to the currently active
  * `PaperScope`.
  */
-var PaperScope = Base.extend(/** @lends PaperScope# */{
+export const PaperScope = Base.extend(/** @lends PaperScope# */{
     _class: 'PaperScope',
 
     /**
@@ -46,7 +51,7 @@ var PaperScope = Base.extend(/** @lends PaperScope# */{
         // element is only used internally when creating scopes for PaperScript.
         // Whenever a PaperScope is created, it automatically becomes the active
         // one.
-        paper = this;
+        // paper = this;        // MMTODO: paper global updating?
         // Default configurable settings.
         this.settings = new Base({
             applyMatrix: true,
@@ -113,7 +118,7 @@ var PaperScope = Base.extend(/** @lends PaperScope# */{
      *
      * @type String
      */
-    version: /*#=*/__options.version,
+    version: Options.version,
 
     /**
      * Gives access to paper's configurable settings.

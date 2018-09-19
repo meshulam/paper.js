@@ -10,6 +10,10 @@
  * All rights reserved.
  */
 
+import { Base } from './Base';
+import { Emitter } from './Emitter';
+import { GlobalScope } from './GlobalScope';
+
 /**
  * @name PaperScopeItem
  *
@@ -19,14 +23,14 @@
  *
  * @private
  */
-var PaperScopeItem = Base.extend(Emitter, /** @lends PaperScopeItem# */{
+export const PaperScopeItem = Base.extend(Emitter, /** @lends PaperScopeItem# */{
 
     /**
      * Creates a PaperScopeItem object.
      */
     initialize: function(activate) {
         // Store reference to the currently active global paper scope:
-        this._scope = paper;
+        this._scope = GlobalScope;
         // Push it onto this._scope[this._list] and set _index:
         this._index = this._scope[this._list].push(this) - 1;
         // If the project has no active reference, activate this one

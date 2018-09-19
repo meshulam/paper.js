@@ -10,12 +10,10 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
-import Point from '../basic/Point';
+import { Base } from '../core/Base';
+import { Point } from '../basic/Point';
 import { Change } from '../item/ChangeFlag';
-import Item from '../item/Item';
-import Group from '../item/Group';
-import Color from './Color';
+import { Color } from './Color'
 
 /**
  * @name Style
@@ -115,8 +113,7 @@ const TEXT_DEFAULTS = Object.assign({}, GROUP_DEFAULTS, {
 });
 
 
-
-var Style = Base.extend(new function() {
+export const Style = Base.extend(new function() {
     var flags = {
         strokeWidth: /*#=*/Change.STROKE,
         strokeCap: /*#=*/Change.STROKE,
@@ -678,5 +675,3 @@ var Style = Base.extend(new function() {
      * @default 'left'
      */
 });
-
-export default Style;

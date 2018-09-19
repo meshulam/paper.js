@@ -10,8 +10,8 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
-import PathItem from './PathItem';
+import { Base } from '../core/Base';
+import { PathItem } from './PathItem';
 /**
  * @name CompoundPath
  *
@@ -27,7 +27,7 @@ import PathItem from './PathItem';
  *
  * @extends PathItem
  */
-var CompoundPath = PathItem.extend(/** @lends CompoundPath# */{
+export const CompoundPath = PathItem.extend(/** @lends CompoundPath# */{
     _class: 'CompoundPath',
     _serializeFields: {
         children: []

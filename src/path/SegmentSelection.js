@@ -13,11 +13,9 @@
 // Path#_segmentSelection is the addition of all segment's states, and is
 // compared with SegmentSelection.ALL, the combination of all
 // SegmentSelection values to see if all segments are fully selected.
-var SegmentSelection = {
+export const SegmentSelection = {
     POINT: 1,
     HANDLE_IN: 2,
     HANDLE_OUT: 4,
     ALL: 1 | 2 | 4 // POINT | HANDLE_IN | HANDLE_OUT
 };
-
-export default SegmentSelection;

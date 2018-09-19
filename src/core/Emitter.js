@@ -10,13 +10,13 @@
  * All rights reserved.
  */
 
-import Base from './Base';
+import { Base } from './Base';
 /**
  * @name Emitter
  * @namespace
  * @private
  */
-var Emitter = {
+export const Emitter = {
     on: function(type, func) {
         // If an object literal is passed, attach all callbacks defined in it
         if (typeof type !== 'string') {

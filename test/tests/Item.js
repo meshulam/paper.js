@@ -11,7 +11,7 @@
  */
 
 import { test, equals } from '../helpers';
-import { Matrix, Base, Rectangle, CompoundPath, Group, Path, Layer, Point } from '../../src';
+import { Project, Matrix, Base, Rectangle, CompoundPath, Group, Path, Layer, Point } from '../../src';
 
 QUnit.module('Item');
 

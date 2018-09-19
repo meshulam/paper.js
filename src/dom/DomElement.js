@@ -10,12 +10,15 @@
  * All rights reserved.
  */
 
+import { Rectangle } from '../basic/Rectangle';
+import { Size } from '../basic/Size';
+
 /**
  * @name DomElement
  * @namespace
  * @private
  */
-var DomElement = new function() {
+export const DomElement = new function() {
     // Handles both getting and setting of vendor prefix values
     function handlePrefix(el, name, set, value) {
         var prefixes = ['', 'webkit', 'moz', 'Moz', 'ms', 'o'],

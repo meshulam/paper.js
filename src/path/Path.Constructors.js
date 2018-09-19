@@ -14,12 +14,11 @@ import Base from '../core/Base';
 import Point from '../basic/Point';
 import Size from '../basic/Size';
 import Rectangle from '../basic/Rectangle';
-import Path from './Path';
 import Segment from './Segment';
 import Numerical from '../util/Numerical';
 import Shape from '../item/Shape';
 
-Path.inject({ statics: new function() {
+export const PathConstructors = { statics: new function() {
 
     var kappa = /*#=*/Numerical.KAPPA,
         ellipseSegments = [
@@ -453,6 +452,4 @@ Path.inject({ statics: new function() {
             return createPath(segments, true, arguments);
         }
     };
-}});
-
-export default Path;
+}};

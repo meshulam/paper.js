@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
+import { Base } from '../core/Base';
 
 /**
  * @name Color
@@ -42,7 +42,7 @@ import Base from '../core/Base';
  * // converted to a Color.
  * circle.fillColor = '#ff0000';
  */
-var Color = Base.extend(new function() {
+export const Color = Base.extend(new function() {
     // Link color types to component indices and types:
     var types = {
         gray: ['gray'],
@@ -1305,5 +1305,3 @@ new function() {
          */
     });
 });
-
-export default Color;

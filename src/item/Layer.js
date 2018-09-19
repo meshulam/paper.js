@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 
-import Group from './Group';
+import { Group } from './Group';
 /**
  * @name Layer
  *
@@ -23,7 +23,7 @@ import Group from './Group';
  *
  * @extends Group
  */
-var Layer = Group.extend(/** @lends Layer# */{
+export const Layer = Group.extend(/** @lends Layer# */{
     _class: 'Layer',
     // Turn on again for now, since examples depend on it.
     // TODO: Discus with @puckey and come to a conclusion

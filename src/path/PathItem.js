@@ -9,11 +9,12 @@
  *
  * All rights reserved.
  */
-import Base from '../core/Base';
-import Size from '../basic/Size';
-import Item from '../item/Item';
 import Numerical from '../util/Numerical';
-import Segment from './Segment';
+
+import { Base } from '../core/Base';
+import { Size } from '../basic/Size';
+import { Item } from '../item/Item';
+import { Segment } from './Segment';
 import { Change } from '../item/ChangeFlag';
 
 /**
@@ -25,7 +26,7 @@ import { Change } from '../item/ChangeFlag';
  *
  * @extends Item
  */
-var PathItem = Item.extend(/** @lends PathItem# */{
+export const PathItem = Item.extend(/** @lends PathItem# */{
     _class: 'PathItem',
     _selectBounds: false,
     _canScaleStroke: true,

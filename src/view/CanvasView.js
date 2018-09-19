@@ -10,12 +10,17 @@
  * All rights reserved.
  */
 
+import { View } from './View';
+import { PaperScope } from '../core/PaperScope';
+import { GlobalScope } from '../core/GlobalScope';
+import { DomElement } from '../dom/DomElement';
+
 /**
  * @name CanvasView
  * @class
  * @private
  */
-var CanvasView = View.extend(/** @lends CanvasView# */{
+export const CanvasView = View.extend(/** @lends CanvasView# */{
     _class: 'CanvasView',
 
     /**
@@ -93,7 +98,7 @@ var CanvasView = View.extend(/** @lends CanvasView# */{
      * pixels.
      */
     getPixelSize: function getPixelSize(size) {
-        var agent = paper.agent,
+        var agent = GlobalScope.agent,
             pixels;
         // Firefox doesn't appear to convert context.font sizes to pixels,
         // while other browsers do. Fall-back to View#getPixelSize.

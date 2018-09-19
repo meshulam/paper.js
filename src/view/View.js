@@ -10,6 +10,15 @@
  * All rights reserved.
  */
 
+import { Base } from '../core/Base';
+import { Emitter } from '../core/Emitter';
+import { PaperScope } from '../core/PaperScope';
+import { GlobalScope } from '../core/GlobalScope';
+import { DomElement } from '../dom/DomElement';
+import { DomEvent } from '../dom/DomEvent';
+import { Item } from '../item/Item';
+import { Rectangle, Point, Size, Matrix } from '../basic/index';
+
 /**
  * @name View
  *
@@ -19,7 +28,7 @@
  * center, both useful for constructing artwork that should appear centered on
  * screen.
  */
-var View = Base.extend(Emitter, /** @lends View# */{
+export const View = Base.extend(Emitter, /** @lends View# */{
     _class: 'View',
 
     initialize: function View(project, element) {
@@ -117,7 +126,7 @@ var View = Base.extend(Emitter, /** @lends View# */{
         // see #_countItemEvent():
         this._itemEvents = { native: {}, virtual: {} };
         // Do not set _autoUpdate on Node.js by default:
-        this._autoUpdate = !paper.agent.node;
+        this._autoUpdate = !GlobalScope.agent.node;
         this._needsUpdate = false;
     },
 
@@ -273,7 +282,7 @@ var View = Base.extend(Emitter, /** @lends View# */{
 
     _handleFrame: function() {
         // Set the global paper object to the current scope
-        paper = this._scope;
+        // paper = this._scope;     // MMTODO: global scope
         var now = Date.now() / 1000,
             delta = this._last ? now - this._last : 0;
         this._last = now;
@@ -1024,15 +1033,6 @@ var View = Base.extend(Emitter, /** @lends View# */{
         _views: [],
         _viewsById: {},
         _id: 0,
-
-        create: function(project, element) {
-            if (document && typeof element === 'string')
-                element = document.getElementById(element);
-            // Factory to provide the right View subclass for a given element.
-            // Produces only CanvasView or View items (for workers) for now:
-            var ctor = window ? CanvasView : View;
-            return new ctor(project, element);
-        }
     }
 },
 new function() { // Injection scope for event handling on the browser
@@ -1455,7 +1455,7 @@ new function() { // Injection scope for event handling on the browser
             function emit(obj) {
                 if (obj.responds(type)) {
                     // Update global reference to this scope.
-                    paper = scope;
+                    // paper = scope;  // MMTODO: global scope
                     // Only produce the event object if we really need it.
                     obj.emit(type, keyEvent = keyEvent
                             || new KeyEvent(type, event, key, character));

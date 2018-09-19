@@ -10,23 +10,16 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
-import Emitter from '../core/Emitter';
-import Matrix from '../basic/Matrix';
-import Point, { LinkedPoint } from '../basic/Point';
-import { LinkedRectangle } from '../basic/Rectangle';
-import { Change, ChangeFlag } from './ChangeFlag';
+import { Base } from '../core/Base';
+import { Emitter } from '../core/Emitter';
+import { GlobalScope } from '../core/GlobalScope';
+import { Matrix, Point, LinkedPoint, LinkedRectangle, Size } from '../basic/index';
 import UID from '../util/UID';
-import Style from '../style/Style';
-import Size from '../basic/Size';
+import { BlendMode } from '../canvas/BlendMode';
+import { Style } from '../style/Style';
 
-
-const DEFAULT_SETTINGS ={
-    applyMatrix: true,
-    insertItems: true,
-    handleSize: 4,
-    hitTolerance: 0
-};
+import { Change, ChangeFlag } from './ChangeFlag';
+import { ItemSelection } from './ItemSelection';
 
 /**
  * @name Item
@@ -38,7 +31,7 @@ const DEFAULT_SETTINGS ={
  * is unique to their type, but share the underlying properties and functions
  * that they inherit from Item.
  */
-var Item = Base.extend(Emitter, /** @lends Item# */{
+export const Item = Base.extend(Emitter, /** @lends Item# */{
     statics: /** @lends Item */{
         /**
          * Override Item.extend() to merge the subclass' _serializeFields with
@@ -158,8 +151,8 @@ new function() { // Injection scope for various item event handlers
             internal = hasProps && props.internal === true,
             matrix = this._matrix = new Matrix(),
             // Allow setting another project than the currently active one.
-            project = hasProps && props.project || paper.project,
-            settings = paper.settings;
+            project = hasProps && props.project || GlobalScope.project,
+            settings = GlobalScope.settings;
         this._id = internal ? null : UID.get();
         this._parent = this._index = null;
         // Inherit the applyMatrix setting from settings.applyMatrix
@@ -1856,11 +1849,12 @@ new function() { // Injection scope for hit-test functions shared with project
         return null;
     }
 
-    Project.inject({
-        hitTest: hitTest,
-        hitTestAll: hitTestAll,
-        _hitTest: hitTestChildren
-    });
+    // MMTODO: Let project inject these on itself?
+    // Project.inject({
+    //     hitTest: hitTest,
+    //     hitTestAll: hitTestAll,
+    //     _hitTest: hitTestChildren
+    // });
 
     return {
         // NOTE: Documentation is in the scope that follows.

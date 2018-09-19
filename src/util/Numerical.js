@@ -15,7 +15,7 @@
  * @namespace
  * @private
  */
-var Numerical = new function() {
+const Numerical = new function() {
 
     // Lookup tables for abscissas and weights with values for n = 2 .. 16.
     // As values are symmetric, only store half of them and adapt algorithm

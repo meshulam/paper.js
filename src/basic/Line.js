@@ -10,8 +10,8 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
-import Point from './Point';
+import { Base } from '../core/Base';
+import { Point } from './Point';
 import Numerical from '../util/Numerical';
 
 /**
@@ -19,7 +19,7 @@ import Numerical from '../util/Numerical';
  *
  * @class The Line object represents..
  */
-var Line = Base.extend(/** @lends Line# */{
+export const Line = Base.extend(/** @lends Line# */{
     _class: 'Line',
 
     // DOCS: document Line class and constructor

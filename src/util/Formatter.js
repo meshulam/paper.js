@@ -10,14 +10,14 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
+import { Base } from '../core/Base';
 
 /**
  * @name Formatter
  * @class
  * @private
  */
-var Formatter = Base.extend(/** @lends Formatter# */{
+const Formatter = Base.extend(/** @lends Formatter# */{
     /**
      * @param {Number} [precision=5] the amount of fractional digits
      */

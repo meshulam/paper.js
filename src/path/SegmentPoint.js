@@ -10,16 +10,16 @@
  * All rights reserved.
  */
 
-import Point from '../basic/Point';
 import Numerical from '../util/Numerical';
-import SegmentSelection from './SegmentSelection';
+import { Point } from '../basic/Point';
+import { SegmentSelection } from './SegmentSelection';
 /**
  * @name SegmentPoint
  * @class An internal version of Point that notifies its segment of each change
  *
  * @private
  */
-var SegmentPoint = Point.extend({
+export const SegmentPoint = Point.extend({
     initialize: function SegmentPoint(point, owner, key) {
         var x, y,
             selected;

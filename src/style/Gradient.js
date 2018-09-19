@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
+import { Base } from '../core/Base';
 
 /**
  * @name Gradient
@@ -63,7 +63,7 @@ import Base from '../core/Base';
  *     destination: path.bounds.rightCenter
  * };
  */
-var Gradient = Base.extend(/** @lends Gradient# */{
+export const Gradient = Base.extend(/** @lends Gradient# */{
     _class: 'Gradient',
 
     // DOCS: Document #initialize()
@@ -205,5 +205,3 @@ var Gradient = Base.extend(/** @lends Gradient# */{
         return false;
     }
 });
-
-export default Gradient;

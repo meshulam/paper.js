@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 
-import Item from './Item';
+import { Item } from './Item';
 import { ChangeFlag } from './ChangeFlag';
 
 /**
@@ -22,7 +22,7 @@ import { ChangeFlag } from './ChangeFlag';
  *
  * @extends Item
  */
-var Group = Item.extend(/** @lends Group# */{
+export const Group = Item.extend(/** @lends Group# */{
     _class: 'Group',
     _selectBounds: false,
     _selectChildren: true,

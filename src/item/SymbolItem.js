@@ -10,6 +10,7 @@
  * All rights reserved.
  */
 
+import { Item } from './Item';
 /**
  * @name SymbolItem
  *
@@ -18,7 +19,7 @@
  *
  * @extends Item
  */
-var SymbolItem = Item.extend(/** @lends SymbolItem# */{
+export const SymbolItem = Item.extend(/** @lends SymbolItem# */{
     _class: 'SymbolItem',
     _applyMatrix: false,
     _canApplyMatrix: false,

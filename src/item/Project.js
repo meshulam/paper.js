@@ -10,6 +10,19 @@
  * All rights reserved.
  */
 
+import { Base } from '../core/Base';
+import { PaperScopeItem } from '../core/PaperScopeItem';
+import { Layer } from './Layer';
+import { Style } from '../style/Style';
+import { Matrix, Point } from '../basic';
+import { ViewFactory } from '../view/ViewFactory';
+import { CanvasProvider } from '../canvas/CanvasProvider';
+
+import { Item } from './Item';
+import { SymbolItem } from './SymbolItem';
+import { ChangeFlag } from './ChangeFlag';
+import { ItemSelection } from './ItemSelection';
+
 /**
  * @name Project
  *
@@ -30,7 +43,7 @@
  * An array of all open projects is accessible through the
  * {@link PaperScope#projects} variable.
  */
-var Project = PaperScopeItem.extend(/** @lends Project# */{
+export const Project = PaperScopeItem.extend(/** @lends Project# */{
     _class: 'Project',
     _list: 'projects',
     _reference: 'project',
@@ -60,7 +73,7 @@ var Project = PaperScopeItem.extend(/** @lends Project# */{
         // If no view is provided, we create a 1x1 px canvas view just so we
         // have something to do size calculations with.
         // (e.g. PointText#_getBounds)
-        this._view = View.create(this,
+        this._view = ViewFactory(this,
                 element || CanvasProvider.getCanvas(1, 1));
         this._selectionItems = {};
         this._selectionCount = 0;
@@ -351,7 +364,7 @@ var Project = PaperScopeItem.extend(/** @lends Project# */{
      * @return {Layer} the added layer, or `null` if adding was not possible
      */
     insertLayer: function(index, layer) {
-        if (layer instanceof Layer) {
+        if (layer.instanceOf('Layer')) {
             // Notify parent of change. Don't notify item itself yet,
             // as we're doing so when adding it to the new owner below.
             layer._remove(false, true);

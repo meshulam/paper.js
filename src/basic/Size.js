@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
+import { Base } from '../core/Base';
 import Formatter from '../util/Formatter';
 import Numerical from '../util/Numerical';
 
@@ -29,7 +29,7 @@ import Numerical from '../util/Numerical';
  * var rect = new Rectangle(new Point(20, 15), size);
  * console.log(rect); // { x: 20, y: 15, width: 10, height: 5 }
  */
-var Size = Base.extend(/** @lends Size# */{
+export const Size = Base.extend(/** @lends Size# */{
     _class: 'Size',
     // Tell Base.read that the Point constructor supports reading with index
     _readIndex: true,
@@ -556,7 +556,7 @@ var Size = Base.extend(/** @lends Size# */{
  *
  * @private
  */
-var LinkedSize = Size.extend({
+export const LinkedSize = Size.extend({
     // Have LinkedSize appear as a normal Size in debugging
     initialize: function Size(width, height, owner, setter) {
         this._width = width;
@@ -594,4 +594,3 @@ var LinkedSize = Size.extend({
 });
 
 export default Size;
-export { LinkedSize };

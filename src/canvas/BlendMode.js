@@ -9,8 +9,9 @@
  *
  * All rights reserved.
  */
+import { CanvasProvider } from './CanvasProvider';
 
-var BlendMode = new function() {
+export const BlendMode = new function() {
     var min = Math.min,
         max = Math.max,
         abs = Math.abs,
@@ -217,12 +218,13 @@ var BlendMode = new function() {
 
     // Build a lookup table for natively supported CSS composite- & blend-modes.
     // The canvas composite modes are always natively supported:
-    var nativeModes = this.nativeModes = Base.each([
+    var nativeModes = this.nativeModes = [
         'source-over', 'source-in', 'source-out', 'source-atop',
         'destination-over', 'destination-in', 'destination-out',
         'destination-atop', 'lighter', 'darker', 'copy', 'xor'
-    ], function(mode) {
-        this[mode] = true;
+    ].reduce(function (modes, mode) {
+        modes[mode] = true;
+        return modes;
     }, {});
 
     // Now test for the new blend modes. Just seeing if globalCompositeOperation
@@ -230,7 +232,7 @@ var BlendMode = new function() {
     // but does not actually apply them.
     var ctx = CanvasProvider.getContext(1, 1);
     if (ctx) {
-        Base.each(modes, function(func, mode) {
+        Object.keys(modes).forEach(function(mode) {
             // Blend #330000 (51) and #aa0000 (170):
             // Multiplying should lead to #220000 (34)
             var darken = mode === 'darken',

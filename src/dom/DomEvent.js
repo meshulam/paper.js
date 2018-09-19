@@ -10,12 +10,15 @@
  * All rights reserved.
  */
 
+import { Point } from '../basic/Point';
+import { DomElement } from './DomElement';
+
 /**
  * @name DomEvent
  * @namespace
  * @private
  */
-var DomEvent = /** @lends DomEvent */{
+export const DomEvent = /** @lends DomEvent */{
     add: function(el, events) {
         // Do not fail if el is not defined, that way we can keep the code that
         // should not fail in web-workers to a minimum.

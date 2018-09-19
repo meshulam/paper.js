@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 
-import Base from 'straps';
+import DefaultBase from 'straps';
 
 /**
  * @name Base
@@ -22,7 +22,7 @@ export function instanceOf(obj, clazz) {
     return obj._inheritance && obj._inheritance.includes(clazz);
 }
 
-Base.inject(/** @lends Base# */{
+DefaultBase.inject(/** @lends Base# */{
     enumerable: false,
     _class: 'Base',
     _inheritance: ['Base'],
@@ -646,4 +646,5 @@ statics: /** @lends Base */{
     }
 }});
 
+export const Base = DefaultBase;
 export default Base;

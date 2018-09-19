@@ -10,10 +10,10 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
-import Item from './item';
-import Point from '../basic/Point';
-import Size, { LinkedSize } from '../basic/Size';
+import { Base } from '../core/Base';
+import { Item } from './Item';
+import { Point } from '../basic/Point';
+import { Size, LinkedSize } from '../basic/Size';
 /**
  * @name Shape
  *
@@ -21,7 +21,7 @@ import Size, { LinkedSize } from '../basic/Size';
  *
  * @extends Item
  */
-var Shape = Item.extend(/** @lends Shape# */{
+export const Shape = Item.extend(/** @lends Shape# */{
     _class: 'Shape',
     _applyMatrix: false,
     _canApplyMatrix: false,

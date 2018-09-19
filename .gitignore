@@ -1,7 +1,6 @@
 /.nvmrc
 /node_modules/
-/dist/*/
-/dist/*.min.js
-/dist/paperjs.zip
+/dist
 /.cache
 yarn-error.log
+/test/testbuild.js

@@ -15,16 +15,18 @@ import Numerical from '../util/Numerical';
 import PathItem from './PathItem';
 import CompoundPath from './CompoundPath'
 import Segment from './Segment';
-import Curve, { CURVE_EVALUATE_METHODS } from './Curve';
+import { Curve, CURVE_EVALUATE_METHODS } from './Curve';
 import Rectangle from '../basic/Rectangle';
 import Point from '../basic/Point';
 import { ChangeFlag, Change } from '../item/ChangeFlag';
+import { ItemSelection } from '../item/ItemSelection';
 import Item from '../item/Item';
 import Line from '../basic/Line';
 import PathFitter from './PathFitter';
 import PathFlattener from './PathFlattener';
 import Shape from '../item/Shape';
 import Size from '../basic/Size';
+import { PathConstructors } from './Path.Constructors';
 
 /**
  * @name Path
@@ -34,7 +36,7 @@ import Size from '../basic/Size';
  * @extends PathItem
  */
 // DOCS: Explain that path matrix is always applied with each transformation.
-var Path = PathItem.extend(/** @lends Path# */{
+export const Path = PathItem.extend(/** @lends Path# */{
     _class: 'Path',
     _serializeFields: {
         segments: [],
@@ -2917,6 +2919,8 @@ statics: {
         }
         return new Rectangle(x1, y1, x2 - x1, y2 - y1);
     }
-}});
+}},
+PathConstructors,
+);
 
 export default Path;

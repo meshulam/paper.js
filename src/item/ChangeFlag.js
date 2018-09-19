@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 
-var ChangeFlag = {
+export const ChangeFlag = {
     // Anything affecting the appearance of an item, including GEOMETRY,
     // STROKE, STYLE and ATTRIBUTE (except for the invisible ones: locked, name)
     APPEARANCE: 0x1,
@@ -41,7 +41,7 @@ var ChangeFlag = {
 };
 
 // Shortcuts to often used ChangeFlag values including APPEARANCE
-var Change = {
+export const Change = {
     // CHILDREN also changes GEOMETRY, since removing children from groups
     // changes bounds.
     CHILDREN: ChangeFlag.CHILDREN | ChangeFlag.GEOMETRY | ChangeFlag.APPEARANCE,
@@ -56,5 +56,3 @@ var Change = {
     PIXELS: ChangeFlag.PIXELS | ChangeFlag.APPEARANCE,
     VIEW: ChangeFlag.VIEW | ChangeFlag.APPEARANCE
 };
-
-export { ChangeFlag, Change };

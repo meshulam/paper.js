@@ -10,9 +10,9 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
-import SegmentPoint from './SegmentPoint';
-import Point from '../basic/Point';
+import { Base } from '../core/Base';
+import { SegmentPoint } from './SegmentPoint';
+import { Point } from '../basic/Point';
 import { Change } from '../item/ChangeFlag';
 
 /**
@@ -27,7 +27,7 @@ import { Change } from '../item/ChangeFlag';
  * {@link Segment#handleOut}), describing the tangents of the two {@link Curve}
  * objects that are connected by this segment.
  */
-var Segment = Base.extend(/** @lends Segment# */{
+export const Segment = Base.extend(/** @lends Segment# */{
     _class: 'Segment',
     beans: true,
     // The selection state, a combination of SegmentSelection

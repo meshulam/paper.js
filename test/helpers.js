@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 
-import { Base } from '../src/index';
+import { Base, Project } from '../src/index';
 
 var isNode = typeof global === 'object',
     isPhantom = typeof window === 'object' && !!window.callPhantom,

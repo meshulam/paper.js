@@ -10,9 +10,9 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
-import Point, { LinkedPoint } from './Point';
-import Size, { LinkedSize } from './Size';
+import { Base } from '../core/Base';
+import { Point, LinkedPoint } from './Point';
+import { Size, LinkedSize } from './Size';
 import Formatter from '../util/Formatter';
 
 /**
@@ -22,7 +22,7 @@ import Formatter from '../util/Formatter';
  * point (x, y), its width, and its height. It should not be confused with a
  * rectangular path, it is not an item.
  */
-var Rectangle = Base.extend(/** @lends Rectangle# */{
+export const Rectangle = Base.extend(/** @lends Rectangle# */{
     _class: 'Rectangle',
     // Tell Base.read that the Rectangle constructor supports reading with index
     _readIndex: true,
@@ -883,7 +883,7 @@ var Rectangle = Base.extend(/** @lends Rectangle# */{
  *
  * @private
  */
-var LinkedRectangle = Rectangle.extend({
+export const LinkedRectangle = Rectangle.extend({
     // Have LinkedRectangle appear as a normal Rectangle in debugging
     initialize: function Rectangle(x, y, width, height, owner, setter) {
         this._set(x, y, width, height, true);
@@ -971,4 +971,3 @@ new function() {
 });
 
 export default Rectangle;
-export { LinkedRectangle };

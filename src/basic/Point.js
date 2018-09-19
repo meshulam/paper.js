@@ -23,11 +23,11 @@
  * console.log(point.x); // 10
  * console.log(point.y); // 5
  */
-import Base from '../core/Base';
+import { Base } from '../core/Base';
 import Numerical from '../util/Numerical';
 import Formatter from '../util/Formatter';
 
-const Point = Base.extend(/** @lends Point# */{
+export const Point = Base.extend(/** @lends Point# */{
     _class: 'Point',
     // Tell Base.read that the Point constructor supports reading with index
     _readIndex: true,
@@ -1030,7 +1030,7 @@ const Point = Base.extend(/** @lends Point# */{
  *
  * @private
  */
-var LinkedPoint = Point.extend({
+export const LinkedPoint = Point.extend({
     // Have LinkedPoint appear as a normal Point in debugging
     initialize: function Point(x, y, owner, setter) {
         this._x = x;
@@ -1080,4 +1080,3 @@ var LinkedPoint = Point.extend({
 });
 
 export default Point;
-export { LinkedPoint };

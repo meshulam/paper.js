@@ -9,9 +9,13 @@
  *
  * All rights reserved.
  */
-import Base from '../core/Base';
 import Numerical from '../util/Numerical';
-import Curve, { CURVE_EVALUATE_METHODS } from './Curve';
+import { Base } from '../core/Base';
+
+export const CURVE_EVALUATE_METHODS = [
+    'getPoint', 'getTangent', 'getNormal', 'getWeightedTangent', 'getWeightedNormal', 'getCurvature',
+];
+
 /**
  * @name CurveLocation
  *
@@ -28,7 +32,7 @@ import Curve, { CURVE_EVALUATE_METHODS } from './Curve';
  * {@link PathItem#getIntersections(path)},
  * etc.
  */
-var CurveLocation = Base.extend(/** @lends CurveLocation# */{
+export const CurveLocation = Base.extend(/** @lends CurveLocation# */{
     _class: 'CurveLocation',
 
     // DOCS: CurveLocation class description: add these back when the mentioned
