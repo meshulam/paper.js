@@ -9,6 +9,9 @@
  *
  * All rights reserved.
  */
+import { Base } from '../core/Base';
+import { Item } from '../item/Item';
+import { Point } from '../basic/Point';
 
 /**
  * @name TextItem
@@ -21,7 +24,7 @@
  *
  * @extends Item
  */
-var TextItem = Item.extend(/** @lends TextItem# */{
+export const TextItem = Item.extend(/** @lends TextItem# */{
     _class: 'TextItem',
     _applyMatrix: false,
     _canApplyMatrix: false,

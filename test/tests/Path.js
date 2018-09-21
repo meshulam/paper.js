@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 import { test, equals } from '../helpers';
-import { Size, Group, Segment, Path, Point } from '../../src';
+import { paper, Size, Group, Segment, Path, Point } from '../../src';
 
 QUnit.module('Path');
 

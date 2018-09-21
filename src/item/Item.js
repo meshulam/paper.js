@@ -13,13 +13,14 @@
 import { Base } from '../core/Base';
 import { Emitter } from '../core/Emitter';
 import { GlobalScope } from '../core/GlobalScope';
-import { Matrix, Point, LinkedPoint, LinkedRectangle, Size } from '../basic/index';
+import { Matrix, Point, LinkedPoint, LinkedRectangle, Rectangle, Size } from '../basic/index';
 import UID from '../util/UID';
 import { BlendMode } from '../canvas/BlendMode';
 import { Style } from '../style/Style';
 
 import { Change, ChangeFlag } from './ChangeFlag';
 import { ItemSelection } from './ItemSelection';
+import { CanvasProvider } from '../canvas/CanvasProvider';
 
 /**
  * @name Item
@@ -834,7 +835,7 @@ new function() { // Injection scope for various item event handlers
         // TODO: Once that is resolved, we should be able to turn off
         // opts.stroke if a resolved item definition does not have a stroke,
         // allowing the code to share caches between #strokeBounds and #bounds.
-        if (!opts.stroke || this.getStrokeScaling())
+        if (!opts.stroke || this._style.getStrokeScaling())
             opts.cacheItem = this;
         // If we're caching bounds, pass on this item as cacheItem, so
         // the children can setup _boundsCache structures for it.
@@ -969,7 +970,7 @@ new function() { // Injection scope for various item event handlers
      * is always shiftless, meaning its translation vector is reset to zero.
      */
     _getStrokeMatrix: function(matrix, options) {
-        var parent = this.getStrokeScaling() ? null
+        var parent = this._style.getStrokeScaling() ? null
                 : options && options.internal ? this
                     : this._parent || this._symbol && this._symbol._item,
             mx = parent ? parent.getViewMatrix().invert() : matrix;
@@ -1697,6 +1698,7 @@ new function() { // Injection scope for various item event handlers
      * circle.scale(5);
      * raster.scale(5);
      */
+    /*
     rasterize: function(resolution, insert) {
         // TODO: Switch to options object for more descriptive call signature.
         var bounds = this.getStrokeBounds(),
@@ -1727,6 +1729,7 @@ new function() { // Injection scope for various item event handlers
             raster.insertAbove(this);
         return raster;
     },
+    */
 
     /**
      * {@grouptitle Geometric Tests}
@@ -2036,7 +2039,7 @@ new function() { // Injection scope for hit-test functions shared with project
                     && filter(this._hitTestSelf(point, options, viewMatrix,
                         // If the item has a non-scaling stroke, we need to
                         // apply the inverted viewMatrix to stroke dimensions.
-                        this.getStrokeScaling() ? null
+                        this._style.getStrokeScaling() ? null
                             : viewMatrix._shiftless().invert()))
                 || null;
         }
@@ -4319,7 +4322,7 @@ new function() { // Injection scope for hit-test functions shared with project
         var strokeMatrix = parentStrokeMatrix
                 ? parentStrokeMatrix.appended(matrix)
                 // pass `true` for dontMerge
-                : this._canScaleStroke && !this.getStrokeScaling(true)
+                : this._canScaleStroke && !this._style.getStrokeScaling(true)
                     && viewMatrix,
             // If we're drawing into a separate canvas and a clipItem is defined
             // for the current rendering loop, we need to draw the clip item

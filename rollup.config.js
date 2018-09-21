@@ -8,7 +8,7 @@ export default {
     file: 'test/testbuild.js',
     format: 'iife',
     name: 'paper',
-    extend: true,
+    sourcemap: true,
   },
   plugins: [
     nodeResolve({

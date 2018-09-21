@@ -10,13 +10,18 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
-import Point from '../basic/Point';
-import Size from '../basic/Size';
-import Rectangle from '../basic/Rectangle';
-import Segment from './Segment';
 import Numerical from '../util/Numerical';
-import Shape from '../item/Shape';
+import { Base } from '../core/Base';
+import { Point } from '../basic/Point';
+import { Size } from '../basic/Size';
+import { Rectangle } from '../basic/Rectangle';
+import { Segment } from './Segment';
+import { Path } from './Path';
+import { Shape } from '../item/Shape';
+
+export function injectConstructors(PathCls) {
+    return PathCls.inject(PathConstructors);
+}
 
 export const PathConstructors = { statics: new function() {
 

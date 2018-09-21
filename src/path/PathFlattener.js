@@ -9,14 +9,14 @@
  *
  * All rights reserved.
  */
-import Base from '../core/Base';
-import Curve, { CURVE_EVALUATE_METHODS } from './Curve';
+import { Base } from '../core/Base';
+import { Curve, CURVE_EVALUATE_METHODS } from './Curve';
 /**
  * @name PathFlattener
  * @class
  * @private
  */
-var PathFlattener = Base.extend({
+export const PathFlattener = Base.extend({
     _class: 'PathFlattener',
 
     /**

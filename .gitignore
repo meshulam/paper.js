@@ -4,3 +4,4 @@
 /.cache
 yarn-error.log
 /test/testbuild.js
+/test/testbuild.js.map

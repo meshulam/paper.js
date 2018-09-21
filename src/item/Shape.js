@@ -13,6 +13,7 @@
 import { Base } from '../core/Base';
 import { Item } from './Item';
 import { Point } from '../basic/Point';
+import { Rectangle } from '../basic/Rectangle';
 import { Size, LinkedSize } from '../basic/Size';
 /**
  * @name Shape

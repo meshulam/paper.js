@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import { Base } from '../core/Base';
+
 /**
  * @name Event
  *
@@ -17,7 +19,7 @@
  * such as {@link MouseEvent}, {@link ToolEvent} and {@link KeyEvent}.
  */
 /* global Event: true */
-var Event = Base.extend(/** @lends Event# */{
+export const Event = Base.extend(/** @lends Event# */{
     _class: 'Event',
 
     initialize: function Event(event) {

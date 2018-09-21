@@ -11,30 +11,31 @@
  */
 
 import { Base, Project } from '../src/index';
+import { GlobalScope as paper } from '../src/core/GlobalScope';
 
 var isNode = typeof global === 'object',
     isPhantom = typeof window === 'object' && !!window.callPhantom,
     scope;
 
-// if (isNode) {
-//     scope = global;
-//     // Resemble.js needs the Image constructor global.
-//     global.Image = paper.window.Image;
-// } else {
-//     scope = window;
-//     // This is only required when running in the browser:
-//     // Until window.history.pushState() works when running locally, we need to
-//     // trick qunit into thinking that the feature is not present. This appears
-//     // to work...
-//     // TODO: Ideally we should fix this in QUnit instead.
-//     delete window.history;
-//     window.history = {};
-//     QUnit.begin(function() {
-//         if (QUnit.urlParams.hidepassed) {
-//             document.getElementById('qunit-tests').className += ' hidepass';
-//         }
-//     });
-// }
+if (isNode) {
+    scope = global;
+    // Resemble.js needs the Image constructor global.
+    global.Image = paper.window.Image;
+} else {
+    scope = window;
+    // This is only required when running in the browser:
+    // Until window.history.pushState() works when running locally, we need to
+    // trick qunit into thinking that the feature is not present. This appears
+    // to work...
+    // TODO: Ideally we should fix this in QUnit instead.
+    // delete window.history;
+    // window.history = {};
+    QUnit.begin(function() {
+        if (QUnit.urlParams.hidepassed) {
+            document.getElementById('qunit-tests').className += ' hidepass';
+        }
+    });
+}
 
 // The unit-tests expect the paper classes to be global.
 // paper.install(scope);
@@ -278,7 +279,7 @@ var compareItem = function(actual, expected, message, options, properties) {
         var styles = ['fillColor',
                 'strokeColor', 'strokeCap', 'strokeJoin', 'dashArray',
                 'dashOffset', 'miterLimit'];
-        if (expected instanceof TextItem)
+        if (expected.instanceOf('TextItem'))
             styles.push('fontSize', 'font', 'leading', 'justification');
         compareProperties(actual.style, expected.style, styles,
                 message + ' (#style)', options);

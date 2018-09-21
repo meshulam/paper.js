@@ -11,6 +11,9 @@
  */
 
 import { Item } from './Item';
+import { SymbolDefinition } from './SymbolDefinition';
+import { Change } from './ChangeFlag';
+
 /**
  * @name SymbolItem
  *
@@ -74,7 +77,7 @@ export const SymbolItem = Item.extend(/** @lends SymbolItem# */{
         // Otherwise we need to set symbol from arg0.
         if (!this._initialize(arg0,
                 arg1 !== undefined && Point.read(arguments, 1)))
-            this.setDefinition(arg0 instanceof SymbolDefinition ?
+            this.setDefinition((arg0 && arg0.instanceOf('SymbolDefinition')) ?
                     arg0 : new SymbolDefinition(arg0));
     },
 

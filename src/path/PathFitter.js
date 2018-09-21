@@ -15,16 +15,16 @@
 // from "Graphics Gems", Academic Press, 1990
 // Modifications and optimizations of original algorithm by Juerg Lehni.
 
-import Base from '../core/Base';
+import { Base } from '../core/Base';
 import Numerical from '../util/Numerical';
-import Segment from './Segment';
+import { Segment } from './Segment';
 
 /**
  * @name PathFitter
  * @class
  * @private
  */
-var PathFitter = Base.extend({
+export const PathFitter = Base.extend({
     initialize: function(path) {
         var points = this.points = [],
             segments = path._segments,
@@ -284,5 +284,3 @@ var PathFitter = Base.extend({
         };
     }
 });
-
-export default PathFitter;

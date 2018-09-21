@@ -10,23 +10,24 @@
  * All rights reserved.
  */
 
-import Base from '../core/Base';
+import { Base } from '../core/Base';
 import Numerical from '../util/Numerical';
-import PathItem from './PathItem';
-import CompoundPath from './CompoundPath'
-import Segment from './Segment';
+import { PathItem } from './PathItem';
+import { CompoundPath } from './CompoundPath'
+import { Segment } from './Segment';
+import { SegmentSelection } from './SegmentSelection';
 import { Curve, CURVE_EVALUATE_METHODS } from './Curve';
-import Rectangle from '../basic/Rectangle';
-import Point from '../basic/Point';
+import { Rectangle } from '../basic/Rectangle';
+import { Point } from '../basic/Point';
 import { ChangeFlag, Change } from '../item/ChangeFlag';
 import { ItemSelection } from '../item/ItemSelection';
-import Item from '../item/Item';
-import Line from '../basic/Line';
-import PathFitter from './PathFitter';
-import PathFlattener from './PathFlattener';
-import Shape from '../item/Shape';
-import Size from '../basic/Size';
-import { PathConstructors } from './Path.Constructors';
+import { Item } from '../item/Item';
+import { Line } from '../basic/Line';
+import { PathFitter } from './PathFitter';
+import { PathFlattener } from './PathFlattener';
+import { Shape } from '../item/Shape';
+import { Size } from '../basic/Size';
+import { GlobalScope } from '../core/GlobalScope';
 
 /**
  * @name Path
@@ -2266,7 +2267,7 @@ new function() { // Scope for drawing
                 hasStroke = style.hasStroke(),
                 dashArray = style.getDashArray(),
                 // dashLength is only set if we can't draw dashes natively
-                dashLength = !paper.support.nativeDash && hasStroke
+                dashLength = !GlobalScope.support.nativeDash && hasStroke
                         && dashArray && dashArray.length;
 
             if (!dontStart)
@@ -2332,7 +2333,7 @@ new function() { // Scope for drawing
             drawSegments(ctx, this, matrix);
             // Now stroke it and draw its handles:
             ctx.stroke();
-            drawHandles(ctx, this._segments, matrix, paper.settings.handleSize);
+            drawHandles(ctx, this._segments, matrix, GlobalScope.settings.handleSize);
         }
     };
 },
@@ -2919,8 +2920,6 @@ statics: {
         }
         return new Rectangle(x1, y1, x2 - x1, y2 - y1);
     }
-}},
-PathConstructors,
-);
+}});
 
 export default Path;

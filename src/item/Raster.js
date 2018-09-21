@@ -10,6 +10,18 @@
  * All rights reserved.
  */
 
+import { Item } from './Item';
+import { Change } from './ChangeFlag'
+import { Point } from '../basic/Point';
+import { Size, LinkedSize } from '../basic/Size';
+import { Event } from '../event/Event';
+import { Matrix } from '../basic/Matrix';
+import { Rectangle } from '../basic/Rectangle';
+import { CanvasProvider } from '../canvas/CanvasProvider';
+import { DomEvent } from '../dom/DomEvent';
+import { Color } from '../style/Color';
+
+
 /**
  * @name Raster
  *
@@ -17,7 +29,7 @@
  *
  * @extends Item
  */
-var Raster = Item.extend(/** @lends Raster# */{
+export const Raster = Item.extend(/** @lends Raster# */{
     _class: 'Raster',
     _applyMatrix: false,
     _canApplyMatrix: false,
@@ -508,7 +520,7 @@ var Raster = Item.extend(/** @lends Raster# */{
         var bounds, path;
         if (!object) {
             bounds = this.getBounds();
-        } else if (object instanceof PathItem) {
+        } else if (object.instanceOf('PathItem')) {
             // TODO: What if the path is smaller than 1 px?
             // TODO: How about rounding of bounds.size?
             path = object;

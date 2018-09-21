@@ -12,6 +12,7 @@
 
 import { Base } from '../core/Base';
 import { SegmentPoint } from './SegmentPoint';
+import { SegmentSelection } from './SegmentSelection';
 import { Point } from '../basic/Point';
 import { Change } from '../item/ChangeFlag';
 
@@ -690,5 +691,3 @@ export const Segment = Base.extend(/** @lends Segment# */{
         return coords;
     }
 });
-
-export default Segment;

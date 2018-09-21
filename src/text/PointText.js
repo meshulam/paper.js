@@ -9,6 +9,7 @@
  *
  * All rights reserved.
  */
+import { TextItem } from './TextItem';
 
 /**
  * @name PointText
@@ -19,7 +20,7 @@
  *
  * @extends TextItem
  */
-var PointText = TextItem.extend(/** @lends PointText# */{
+export const PointText = TextItem.extend(/** @lends PointText# */{
     _class: 'PointText',
 
     /**

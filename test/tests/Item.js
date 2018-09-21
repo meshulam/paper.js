@@ -11,7 +11,11 @@
  */
 
 import { test, equals } from '../helpers';
-import { Project, Matrix, Base, Rectangle, CompoundPath, Group, Path, Layer, Point } from '../../src';
+import {
+    paper, Project, Matrix, Base, Rectangle,
+    CompoundPath, Group, Path, Layer, Point,
+    Raster, SymbolItem, PointText, Color,
+} from '../../src';
 
 QUnit.module('Item');
 
@@ -677,7 +681,6 @@ test('Item#className', function() {
     equals(new CompoundPath().className, 'CompoundPath');
     equals(new Raster().className, 'Raster');
     equals(new SymbolItem().className, 'SymbolItem');
-    equals(new PlacedSymbol().className, 'SymbolItem'); // deprecated
     equals(new PointText().className, 'PointText');
 });
 
@@ -823,6 +826,7 @@ test('Item#applyMatrix', function() {
 
 test('PaperScope#settings.insertItems', function() {
     var insertItems = paper.settings.insertItems;
+    var project = paper.project;
     paper.settings.insertItems = true;
 
     var path1, path2;

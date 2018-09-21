@@ -15,7 +15,7 @@ require('./Size.js');
 require('./Rectangle.js');
 require('./Matrix.js');
 
-// require('./Color.js');
+require('./Color.js');
 
 // require('./Emitter.js');
 

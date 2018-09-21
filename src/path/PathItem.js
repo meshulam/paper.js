@@ -1111,5 +1111,3 @@ export const PathItem = Item.extend(/** @lends PathItem# */{
      * @param {Point} to the destination point of the newly added curve
      */
 });
-
-export default PathItem;

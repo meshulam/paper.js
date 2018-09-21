@@ -9,6 +9,12 @@
  *
  * All rights reserved.
  */
+import UID from '../util/UID';
+import { Base } from '../core/Base';
+import { Change, ChangeFlag } from './ChangeFlag';
+import { Item } from './Item';
+import { Point } from '../basic/Point';
+import { GlobalScope } from '../core/GlobalScope';
 
 /**
  * @name SymbolDefinition
@@ -19,7 +25,7 @@
  * internal properties such as segment lists and gradient positions don't need
  * to be updated with every transformation.
  */
-var SymbolDefinition = Base.extend(/** @lends SymbolDefinition# */{
+export const SymbolDefinition = Base.extend(/** @lends SymbolDefinition# */{
     _class: 'SymbolDefinition',
 
     /**
@@ -58,7 +64,7 @@ var SymbolDefinition = Base.extend(/** @lends SymbolDefinition# */{
      */
     initialize: function SymbolDefinition(item, dontCenter) {
         this._id = UID.get();
-        this.project = paper.project;
+        this.project = GlobalScope.project;
         if (item)
             this.setItem(item, dontCenter);
     },

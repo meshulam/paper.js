@@ -99,5 +99,3 @@ export const SegmentPoint = Point.extend({
             : 0;
     }
 });
-
-export default SegmentPoint;
