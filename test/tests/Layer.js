@@ -11,6 +11,7 @@
  */
 
 import { test, equals } from '../helpers';
+import { paper, Layer, Path } from '../../src';
 
 QUnit.module('Layer');
 
@@ -129,6 +130,7 @@ test('#addChild() / #insertBelow() with nesting', function() {
 });
 
 test('#remove() with named layers', function(){
+    var project = paper.project;
     var name = 'my layer';
     var layer1 = new Layer({name: name });
     var layer2 = new Layer({name: name });

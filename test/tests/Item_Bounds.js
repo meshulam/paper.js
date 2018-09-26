@@ -325,6 +325,7 @@ test('path.strokeBounds with rectangles', function() {
 });
 
 test('path.strokeBounds without strokeScaling and zoomed view', function() {
+    var view = paper.view;
     var path = new Path.Circle({
         center: [0, 0],
         radius: 100,
@@ -347,6 +348,7 @@ test('path.strokeBounds without strokeScaling and zoomed view', function() {
 });
 
 test('shape.strokeBounds without strokeScaling and zoomed view', function() {
+    var view = paper.view;
     var path = new Shape.Circle({
         center: [0, 0],
         radius: 100,
@@ -586,6 +588,7 @@ test('path.strokeBounds with rectangles', function() {
 });
 
 test('path.strokeBounds without strokeScaling and zoomed view', function() {
+    var view = paper.view;
     var path = new Path.Circle({
         center: [0, 0],
         radius: 100,
@@ -625,6 +628,7 @@ test('path.strokeBounds without strokeScaling and zoomed view', function() {
 });
 
 test('shape.strokeBounds without strokeScaling and zoomed view', function() {
+    var view = paper.view;
     var shape = new Shape.Circle({
         center: [0, 0],
         radius: 100,

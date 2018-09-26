@@ -11,6 +11,8 @@
  */
 
 import { test, equals } from '../helpers';
+import { paper, Path, Color, Group } from '../../src';
+
 QUnit.module('Style');
 
 test('Style defaults', function() {

@@ -11,6 +11,8 @@
  */
 
 import { test, equals } from '../helpers';
+import { Curve, Path, Point } from '../../src';
+import Numerical from '../../src/util/Numerical';
 
 QUnit.module('Curve');
 
@@ -239,8 +241,8 @@ test('Curve#getTimeAt() with straight curve', function() {
 
 test('Curve#getTimeAt() with offset at end of curve', function() {
     // #1149:
-    var curve = [-7500, 0, -7500, 4142.135623730952, -4142.135623730952, 7500, 0, 7500];
-    equals(Curve.getTimeAt(curve, 11782.625235553916), 1);
+    var curve = new Curve([-7500, 0, -7500, 4142.135623730952, -4142.135623730952, 7500, 0, 7500]);
+    equals(curve.getTimeAt(11782.625235553916), 1);
 });
 
 test('Curve#getLocationAt()', function() {

@@ -11,6 +11,7 @@
  */
 
 import { test, equals } from '../helpers';
+import { paper, Group, Path, Rectangle, Point } from '../../src';
 
 QUnit.module('Group');
 

@@ -10,6 +10,10 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+import { paper, Base, CompoundPath, Path, Color, Raster, Size, Rectangle } from '../../src';
+import { DomEvent } from '../../src/dom/DomEvent';
+
 QUnit.module('Raster');
 
 test('Create a raster without a source and check its size', function() {

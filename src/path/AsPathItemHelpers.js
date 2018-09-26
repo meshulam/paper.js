@@ -19,8 +19,8 @@ export function injectAsPathItemHelpers() {
   });
 
   Shape.inject({
-    _asPathItem: function() {
-        return Path.fromShape(this, false);
+    toPath: function (insert) {
+        return Path.fromShape(this, insert);
     },
   });
 

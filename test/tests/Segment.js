@@ -11,6 +11,8 @@
  */
 
 import { test, equals } from '../helpers';
+import { Path, Segment, Size, Point } from '../../src';
+
 QUnit.module('Segment');
 
 test('new Segment()', function() {

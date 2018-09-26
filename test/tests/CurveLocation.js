@@ -11,6 +11,7 @@
  */
 
 import { test, equals } from '../helpers';
+import { Path, Point } from '../../src';
 
 QUnit.module('CurveLocation');
 

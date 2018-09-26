@@ -18,6 +18,7 @@ import { DomElement } from '../dom/DomElement';
 import { DomEvent } from '../dom/DomEvent';
 import { Item } from '../item/Item';
 import { Rectangle, Point, Size, Matrix } from '../basic/index';
+import { Change } from '../item/ChangeFlag';
 
 /**
  * @name View

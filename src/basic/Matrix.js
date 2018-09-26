@@ -14,6 +14,7 @@ import Formatter from '../util/Formatter';
 import { Base } from '../core/Base';
 import { Point } from './Point';
 import { Rectangle } from './Rectangle';
+import { Change } from '../item/ChangeFlag';
 
 // Based on goog.graphics.AffineTransform, as part of the Closure Library.
 // Copyright 2008 The Closure Library Authors. All Rights Reserved.

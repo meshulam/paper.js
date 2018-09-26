@@ -10,6 +10,7 @@
  * All rights reserved.
  */
 import { test, equals } from '../helpers';
+import { Shape } from '../../src';
 
 QUnit.module('Shape');
 
@@ -50,7 +51,8 @@ test('shape.toPath().toShape()', function() {
         })
     };
 
-    Base.each(shapes, function(shape, name) {
+    Object.keys(shapes).forEach(function(name) {
+        var shape = shapes[name];
         equals(shape.toPath().toShape(), shape, name + '.toPath().toShape()');
     });
 });

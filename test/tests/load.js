@@ -27,9 +27,9 @@ require('./Item_Order.js');
 require('./Item_Bounds.js');
 require('./Item_Getting.js');
 
-// require('./Layer.js');
-// require('./Group.js');
-// require('./Segment.js');
+require('./Layer.js');
+require('./Group.js');
+require('./Segment.js');
 
 require('./Path.js');
 require('./Path_Constructors.js');
@@ -41,18 +41,18 @@ require('./CompoundPath.js');
 require('./PathItem.js');
 require('./PathItem_Contains.js');
 
-// require('./Shape.js');
+require('./Shape.js');
 
-// require('./Curve.js');
-// require('./CurveLocation.js');
+require('./Curve.js');
+require('./CurveLocation.js');
 
-// require('./Style.js');
+require('./Style.js');
 
-// require('SymbolItem.js');
+// require('./SymbolItem.js');
 
-// require('Raster.js');
+require('./Raster.js');
 
-// require('TextItem.js');
+// require('./TextItem.js');
 
 // require('./HitResult.js');
 

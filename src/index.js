@@ -62,10 +62,12 @@ injectBoolean(PathItem);
 ///
 import { Base } from './core/Base';
 import { PaperScope } from './core/PaperScope';
+import { DomEvent } from './dom/DomEvent';
+import { DomElement } from './dom/DomElement';
 
 import Numerical from './util/Numerical';
 
-var Key, DomEvent, DomElement;
+var Key;
 
 PaperScope.inject(Base.exports, {
   Base: Base,

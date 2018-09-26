@@ -10,6 +10,7 @@
  * All rights reserved.
  */
 
+import { Base } from '../core/Base';
 import { Item } from './Item';
 import { Change } from './ChangeFlag'
 import { HitResult } from './HitResult';
@@ -257,7 +258,7 @@ export const Raster = Item.extend(/** @lends Raster# */{
             var view = that.getView(),
                 type = event && event.type || 'load';
             if (view && that.responds(type)) {
-                paper = view._scope;
+                // paper = view._scope;     // MMTODO: need to make GlobalScope mutable?
                 that.emit(type, new Event(event));
             }
         }
