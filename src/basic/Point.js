@@ -24,6 +24,7 @@
  * console.log(point.y); // 5
  */
 import { Base } from '../core/Base';
+import { Rectangle } from './Rectangle';
 import Numerical from '../util/Numerical';
 import Formatter from '../util/Formatter';
 

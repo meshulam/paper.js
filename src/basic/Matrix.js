@@ -10,6 +10,7 @@
  * All rights reserved.
  */
 
+import Formatter from '../util/Formatter';
 import { Base } from '../core/Base';
 import { Point } from './Point';
 import { Rectangle } from './Rectangle';

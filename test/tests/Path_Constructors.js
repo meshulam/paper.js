@@ -11,6 +11,7 @@
  */
 
 import { test, equals } from '../helpers';
+import { Path, Rectangle, Point } from '../../src';
 
 QUnit.module('Path Constructors');
 

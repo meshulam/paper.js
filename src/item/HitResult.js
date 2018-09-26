@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 
+import { Base } from '../core/Base';
+
 /**
  * @name HitResult
  *
@@ -17,7 +19,7 @@
  * test. It is returned by {@link Item#hitTest(point)} and
  * {@link Project#hitTest(point)}.
  */
-var HitResult = Base.extend(/** @lends HitResult# */{
+export const HitResult = Base.extend(/** @lends HitResult# */{
     _class: 'HitResult',
 
     initialize: function HitResult(type, item, values) {

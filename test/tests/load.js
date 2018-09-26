@@ -15,35 +15,31 @@ require('./Size.js');
 require('./Rectangle.js');
 require('./Matrix.js');
 
-require('./Color.js');
+// require('./Color.js');
 
-// require('./Emitter.js');
+require('./Emitter.js');
 
-// include('Project.js');
+require('./Project.js');
 
 require('./Item.js');
-// require('Item_Cloning.js');
-// require('Item_Order.js');
-// require('Item_Bounds.js');
-// require('Item_Getting.js');
-// require('./Item_Cloning.js');
-// require('./Item_Order.js');
-// require('./Item_Bounds.js');
-// require('./Item_Getting.js');
+require('./Item_Cloning.js');
+require('./Item_Order.js');
+require('./Item_Bounds.js');
+require('./Item_Getting.js');
 
 // require('./Layer.js');
 // require('./Group.js');
 // require('./Segment.js');
 
 require('./Path.js');
-// require('./Path_Constructors.js');
-// require('./Path_Intersections.js');
-// require('./Path_Boolean.js');
+require('./Path_Constructors.js');
+require('./Path_Intersections.js');
+require('./Path_Boolean.js');
 
-// require('./CompoundPath.js');
+require('./CompoundPath.js');
 
-// require('./PathItem.js');
-// require('./PathItem_Contains.js');
+require('./PathItem.js');
+require('./PathItem_Contains.js');
 
 // require('./Shape.js');
 

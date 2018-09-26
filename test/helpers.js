@@ -10,12 +10,19 @@
  * All rights reserved.
  */
 
-import { Base, Project } from '../src/index';
+import resemble from 'resemblejs';
+
+import {
+    Base, Project, Raster, PathItem, CompoundPath,
+    Group, Shape,
+} from '../src/index';
 import { GlobalScope as paper } from '../src/core/GlobalScope';
 
 var isNode = typeof global === 'object',
     isPhantom = typeof window === 'object' && !!window.callPhantom,
     scope;
+
+let resembleSetup = false;
 
 if (isNode) {
     scope = global;
@@ -209,8 +216,8 @@ var comparePixels = function(actual, expected, message, options) {
         var id = QUnit.config.current.testId,
             index = QUnit.config.current.assertions.length + 1,
             result;
-        if (!resemble._setup) {
-            resemble._setup = true;
+        if (!resembleSetup) {
+            resembleSetup = true;
             resemble.outputSettings({
                 errorColor: { red: 255, green: 51, blue: 0 },
                 errorType: 'flat',
@@ -559,6 +566,7 @@ export {
     isPhantom,
     compareSVG,
     compareItem,
+    compareBoolean,
     equals,
     test,
 }

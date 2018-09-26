@@ -11,6 +11,10 @@
  */
 
 import { test, equals } from '../helpers';
+import {
+    paper, Path, Color, Gradient, CompoundPath, PointText, SymbolItem, SymbolDefinition,
+    Group, Shape, Point,
+} from '../../src';
 
 QUnit.module('Item Cloning');
 

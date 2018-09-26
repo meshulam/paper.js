@@ -10,7 +10,9 @@
  * All rights reserved.
  */
 
+import UID from '../util/UID';
 import { Base } from '../core/Base';
+import { GradientStop } from './GradientStop';
 
 /**
  * @name Gradient

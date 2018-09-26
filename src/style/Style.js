@@ -112,6 +112,14 @@ const TEXT_DEFAULTS = Object.assign({}, GROUP_DEFAULTS, {
     fillColor: new Color() // black
 });
 
+let itemAccessors;
+
+export function injectStyleAccessors(ItemCls) {
+    if (!itemAccessors) {
+        throw new Error('Style accessors have not been instantiated yet');
+    }
+    ItemCls.inject(itemAccessors);
+}
 
 export const Style = Base.extend(new function() {
     var flags = {
@@ -145,7 +153,7 @@ export const Style = Base.extend(new function() {
                     || paper.project;
             // Use different defaults based on the owner
             this._defaults = !_owner || _owner.instanceOf('Group') ? GROUP_DEFAULTS
-                    : _owner.instanceOf('textItem') ? TEXT_DEFAULTS
+                    : _owner.instanceOf('TextItem') ? TEXT_DEFAULTS
                     : ITEM_DEFAULTS;
             if (style)
                 this.set(style);
@@ -258,7 +266,7 @@ export const Style = Base.extend(new function() {
         };
     });
 
-    // Item.inject(item);       // MMTODO: can do without injected accessors?
+    itemAccessors = item;       // MMTODO: can do without injected accessors?
     return fields;
 }, /** @lends Style# */{
     set: function(style) {

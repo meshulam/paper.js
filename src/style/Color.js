@@ -10,7 +10,9 @@
  * All rights reserved.
  */
 
+import Formatter from '../util/Formatter';
 import { Base } from '../core/Base';
+import { CanvasProvider } from '../canvas/CanvasProvider';
 
 /**
  * @name Color

@@ -10,6 +10,8 @@
  * All rights reserved.
  */
 import { TextItem } from './TextItem';
+import { Rectangle } from '../basic/Rectangle';
+import { Point, LinkedPoint } from '../basic/Point';
 
 /**
  * @name PointText

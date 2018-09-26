@@ -10,7 +10,10 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
 QUnit.module('Project');
+
+import { Project, Layer, Path } from '../../src';
 
 test('activate()', function() {
     var project = new Project();

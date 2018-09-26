@@ -12,6 +12,7 @@
 
 import { Item } from './Item';
 import { Change } from './ChangeFlag'
+import { HitResult } from './HitResult';
 import { Point } from '../basic/Point';
 import { Size, LinkedSize } from '../basic/Size';
 import { Event } from '../event/Event';

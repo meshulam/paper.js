@@ -11,6 +11,7 @@
  */
 
 import { test, equals } from '../helpers';
+import { Point, CompoundPath, Path } from '../../src';
 
 QUnit.module('Compound Path');
 

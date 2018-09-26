@@ -10,6 +10,7 @@
  * All rights reserved.
  */
 
+import { Base } from '../core/Base';
 import { Item } from './Item';
 import { ChangeFlag } from './ChangeFlag';
 

@@ -11,6 +11,7 @@
  */
 import Numerical from '../util/Numerical';
 import { Base } from '../core/Base';
+import { classify, getLength, getPeaks } from './CurveUtils';
 
 export const CURVE_EVALUATE_METHODS = [
     'getPoint', 'getTangent', 'getNormal', 'getWeightedTangent', 'getWeightedNormal', 'getCurvature',
@@ -454,13 +455,13 @@ export const CurveLocation = Base.extend(/** @lends CurveLocation# */{
             // Find the largest offset of unambiguous direction on the curve,
             // taking their loops, cusps, inflections, and "peaks" into account.
             var v = curve.getValues(),
-                roots = Curve.classify(v).roots || Curve.getPeaks(v),
+                roots = classify(v).roots || getPeaks(v),
                 count = roots.length,
                 t = end && count > 1 ? roots[count - 1]
                         : count > 0 ? roots[0]
                         : 0.5;
             // Then use half of the offset, for extra measure.
-            offsets.push(Curve.getLength(v, end ? t : 0, end ? 1 : t) / 2);
+            offsets.push(getLength(v, end ? t : 0, end ? 1 : t) / 2);
         }
 
         function isInRange(angle, min, max) {

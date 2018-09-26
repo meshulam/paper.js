@@ -11,6 +11,7 @@
  */
 
 import { test, equals } from '../helpers';
+import { Item } from '../../src';
 
 QUnit.module('Emitter');
 

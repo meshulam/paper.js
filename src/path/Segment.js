@@ -15,6 +15,7 @@ import { SegmentPoint } from './SegmentPoint';
 import { SegmentSelection } from './SegmentSelection';
 import { Point } from '../basic/Point';
 import { Change } from '../item/ChangeFlag';
+import { CurveLocation } from './CurveLocation';
 
 /**
  * @name Segment

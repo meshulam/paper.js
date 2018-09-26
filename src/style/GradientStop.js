@@ -11,6 +11,7 @@
  */
 
 import { Base } from '../core/Base';
+import { Color } from './Color';
 
 // TODO: Support midPoint? (initial tests didn't look nice)
 /**

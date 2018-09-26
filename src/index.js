@@ -14,6 +14,7 @@ export { Shape } from './item/Shape';
 export { Project } from './item/Project';
 export { Raster } from './item/Raster';
 export { SymbolItem } from './Item/SymbolItem';
+export { SymbolDefinition } from './Item/SymbolDefinition';
 
 export { Color } from './style/Color';
 export { Style } from './style/Style';
@@ -24,9 +25,10 @@ export { GradientStop } from './style/GradientStop';
 export { PointText } from './text/PointText';
 export { TextItem } from './text/TextItem';
 
-export { Path } from './path/Path';
 export { PathItem } from './path/PathItem';
+export { Path } from './path/Path';
 export { CompoundPath } from './path/CompoundPath';
+export { Curve } from './path/Curve';
 export { Segment } from './path/Segment';
 
 export { GlobalScope as paper } from './core/GlobalScope';
@@ -41,6 +43,21 @@ import { Path } from './path/Path';
 import { injectConstructors } from './path/Path.Constructors';
 injectConstructors(Path);
 
+/// Add style getters/setters on Item
+import { injectStyleAccessors } from './style/Style';
+injectStyleAccessors(Item);
+
+/// Inject PathItem.create factory
+import './path/PathItem.Create';
+
+/// Inject _asPathItem helpers for intersects()
+import { injectAsPathItemHelpers } from './path/AsPathItemHelpers';
+injectAsPathItemHelpers();
+
+/// Add PathItem boolean operations
+import { PathItem } from './path/PathItem';
+import { injectBoolean } from './path/PathItem.Boolean';
+injectBoolean(PathItem);
 
 ///
 import { Base } from './core/Base';

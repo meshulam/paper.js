@@ -11,6 +11,9 @@
  */
 
 import { test, equals } from '../helpers';
+import {
+    paper, Group, Path, Raster, Layer, Item,
+} from '../../src';
 
 QUnit.module('Getting and Matching Items');
 
@@ -218,7 +221,7 @@ test('Project#getItems() overlapping', function() {
     });
 
     equals(function() {
-        var matches = project.getItems({
+        var matches = paper.project.getItems({
             class: Path,
             overlapping: [0, 0, 400, 400]
         });
@@ -226,7 +229,7 @@ test('Project#getItems() overlapping', function() {
     }, true);
 
     equals(function() {
-        var matches = project.getItems({
+        var matches = paper.project.getItems({
             class: Path,
             overlapping: [200, 0, 400, 400]
         });
@@ -234,7 +237,7 @@ test('Project#getItems() overlapping', function() {
     }, true);
 
     equals(function() {
-        var matches = project.getItems({
+        var matches = paper.project.getItems({
             class: Path,
             overlapping: [400, 0, 400, 400]
         });
@@ -250,7 +253,7 @@ test('Project#getItems() inside', function() {
     });
 
     equals(function() {
-        var matches = project.getItems({
+        var matches = paper.project.getItems({
             class: Path,
             inside: [0, 0, 400, 400]
         });
@@ -258,7 +261,7 @@ test('Project#getItems() inside', function() {
     }, true);
 
     equals(function() {
-        var matches = project.getItems({
+        var matches = paper.project.getItems({
             class: Path,
             inside: [200, 0, 400, 400]
         });

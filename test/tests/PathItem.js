@@ -11,6 +11,8 @@
  */
 
 import { test, equals } from '../helpers';
+import { Path, PathItem } from '../../src';
+
 QUnit.module('PathItem');
 
 test('PathItem#create() with SVG path-data (#1101)', function() {

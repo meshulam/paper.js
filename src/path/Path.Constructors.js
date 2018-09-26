@@ -18,6 +18,7 @@ import { Rectangle } from '../basic/Rectangle';
 import { Segment } from './Segment';
 import { Path } from './Path';
 import { Shape } from '../item/Shape';
+import { Item } from '../item/Item';
 
 export function injectConstructors(PathCls) {
     return PathCls.inject(PathConstructors);

@@ -15,6 +15,9 @@ import { Item } from './Item';
 import { Point } from '../basic/Point';
 import { Rectangle } from '../basic/Rectangle';
 import { Size, LinkedSize } from '../basic/Size';
+import { Change } from './ChangeFlag';
+import { HitResult } from './HitResult';
+
 /**
  * @name Shape
  *
@@ -171,24 +174,24 @@ export const Shape = Item.extend(/** @lends Shape# */{
      *     this shape item
      * @see Path#toShape(insert)
      */
-    toPath: function(insert) {
-        // TODO: Move to Path.createTYPE creators instead of fake constructors.
-        var path = new Path[Base.capitalize(this._type)]({
-            center: new Point(),
-            size: this._size,
-            radius: this._radius,
-            insert: false
-        });
-        path.copyAttributes(this);
-        // The created path will inherit #applyMatrix from this Shape, hence it
-        // will always be false.
-        // Respect the setting of paper.settings.applyMatrix for new paths:
-        if (paper.settings.applyMatrix)
-            path.setApplyMatrix(true);
-        if (insert === undefined || insert)
-            path.insertAbove(this);
-        return path;
-    },
+    // toPath: function(insert) {
+    //     // TODO: Move to Path.createTYPE creators instead of fake constructors.
+    //     var path = new Path[Base.capitalize(this._type)]({
+    //         center: new Point(),
+    //         size: this._size,
+    //         radius: this._radius,
+    //         insert: false
+    //     });
+    //     path.copyAttributes(this);
+    //     // The created path will inherit #applyMatrix from this Shape, hence it
+    //     // will always be false.
+    //     // Respect the setting of paper.settings.applyMatrix for new paths:
+    //     if (paper.settings.applyMatrix)
+    //         path.setApplyMatrix(true);
+    //     if (insert === undefined || insert)
+    //         path.insertAbove(this);
+    //     return path;
+    // },
 
     toShape: '#clone',
 

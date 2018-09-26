@@ -11,6 +11,10 @@
  */
 
 import { test, equals } from '../helpers';
+import {
+    Path, Point, CompoundPath, Rectangle, Shape, Segment, PathItem,
+    Size,
+} from '../../src';
 
 QUnit.module('PathItem Contains');
 

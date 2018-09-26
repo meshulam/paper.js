@@ -11,6 +11,7 @@
  */
 
 import { test, equals } from '../helpers';
+import { paper, Path, Group, Layer } from '../../src';
 
 QUnit.module('Item Order');
 

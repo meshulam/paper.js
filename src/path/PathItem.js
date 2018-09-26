@@ -11,10 +11,13 @@
  */
 import Numerical from '../util/Numerical';
 
+import { CanvasProvider } from '../canvas/CanvasProvider';
 import { Base } from '../core/Base';
 import { Size } from '../basic/Size';
+import { Point } from '../basic/Point';
 import { Item } from '../item/Item';
 import { Segment } from './Segment';
+import { Curve } from './Curve';
 import { Change } from '../item/ChangeFlag';
 
 /**
@@ -36,64 +39,6 @@ export const PathItem = Item.extend(/** @lends PathItem# */{
 
     initialize: function PathItem() {
         // Do nothing.
-    },
-
-    statics: /** @lends PathItem */{
-        /**
-         * Creates a path item from the given SVG path-data, determining if the
-         * data describes a plain path or a compound-path with multiple
-         * sub-paths.
-         *
-         * @name PathItem.create
-         * @function
-         * @param {String} pathData the SVG path-data to parse
-         * @return {Path|CompoundPath} the newly created path item
-         */
-        /**
-         * Creates a path item from the given segments array, determining if the
-         * array describes a plain path or a compound-path with multiple
-         * sub-paths.
-         *
-         * @name PathItem.create
-         * @function
-         * @param {Number[][]} segments the segments array to parse
-         * @return {Path|CompoundPath} the newly created path item
-         */
-        /**
-         * Creates a path item from the given object, determining if the
-         * contained information describes a plain path or a compound-path with
-         * multiple sub-paths.
-         *
-         * @name PathItem.create
-         * @function
-         * @param {Object} object an object containing the properties describing
-         *     the item to be created
-         * @return {Path|CompoundPath} the newly created path item
-         */
-        create: function(arg) {
-            var data,
-                segments,
-                compound;
-            if (Base.isPlainObject(arg)) {
-                segments = arg.segments;
-                data = arg.pathData;
-            } else if (Array.isArray(arg)) {
-                segments = arg;
-            } else if (typeof arg === 'string') {
-                data = arg;
-            }
-            if (segments) {
-                var first = segments[0];
-                compound = first && Array.isArray(first[0]);
-            } else if (data) {
-                // If there are multiple moveTo commands or a closePath command
-                // followed by other commands, we have a CompoundPath.
-                compound = (data.match(/m/gi) || []).length > 1
-                        || /z\s*\S+/i.test(data);
-            }
-            var ctor = compound ? CompoundPath : Path;
-            return new ctor(arg);
-        }
     },
 
     _asPathItem: function() {
@@ -264,15 +209,16 @@ export const PathItem = Item.extend(/** @lends PathItem# */{
     _contains: function(point) {
         // NOTE: point is reverse transformed by _matrix, so we don't need to
         // apply the matrix here.
-/*#*/ if (__options.nativeContains || !__options.booleanOperations) {
-        // To compare with native canvas approach:
-        var ctx = CanvasProvider.getContext(1, 1);
-        // Use dontFinish to tell _draw to only produce geometries for hit-test.
-        this._draw(ctx, new Base({ dontFinish: true }));
-        var res = ctx.isPointInPath(point.x, point.y, this.getFillRule());
-        CanvasProvider.release(ctx);
-        return res;
-/*#*/ } else { // !__options.nativeContains && __options.booleanOperations
+        // MMTODO: should provide faster implementation?
+// /*#*/ if (__options.nativeContains || !__options.booleanOperations) {
+        // // To compare with native canvas approach:
+        // var ctx = CanvasProvider.getContext(1, 1);
+        // // Use dontFinish to tell _draw to only produce geometries for hit-test.
+        // this._draw(ctx, new Base({ dontFinish: true }));
+        // var res = ctx.isPointInPath(point.x, point.y, this.getFillRule());
+        // CanvasProvider.release(ctx);
+        // return res;
+// /*#*/ } else { // !__options.nativeContains && __options.booleanOperations
         // Check the transformed point against the untransformed (internal)
         // handle bounds, which is the fastest rough bounding box to calculate
         // for a quick check before calculating the actual winding.
@@ -285,7 +231,7 @@ export const PathItem = Item.extend(/** @lends PathItem# */{
         return winding.onPath || !!(this.getFillRule() === 'evenodd'
                 ? winding.windingL & 1 || winding.windingR & 1
                 : winding.winding);
-/*#*/ } // !__options.nativeContains && __options.booleanOperations
+// /*#*/ } // !__options.nativeContains && __options.booleanOperations
     },
 
     /**

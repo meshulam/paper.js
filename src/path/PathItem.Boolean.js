@@ -10,7 +10,20 @@
  * All rights reserved.
  */
 
-import PathItem from './PathItem';
+import { CompoundPath } from './CompoundPath';
+import { Curve } from './Curve';
+import { CurveLocation } from './CurveLocation';
+import { Path } from './Path'
+import { Segment } from './Segment';
+
+import { Item } from '../item/Item';
+import { Base } from '../core/Base';
+import Numerical from '../util/Numerical'
+import { getValues } from './CurveUtils';
+
+export function injectBoolean(PathItemCls) {
+    PathItemCls.inject(pathItemBooleanOps);
+}
 
 /*
  * Boolean Geometric Path Operations
@@ -29,7 +42,7 @@ import PathItem from './PathItem';
  * @author Juerg Lehni <juerg@scratchdisk.com>
  * http://hkrish.com/playground/paperjs/booleanStudy.html
  */
-PathItem.inject(new function() {
+export const pathItemBooleanOps = new function() {
     var min = Math.min,
         max = Math.max,
         abs = Math.abs,
@@ -633,7 +646,7 @@ PathItem.inject(new function() {
                 // - `true`: Connect with a curve that takes the segment handles
                 //   into account, just like how closed paths behave.
                 if (!path._closed) {
-                    vClose = Curve.getValues(
+                    vClose = getValues(
                             path.getLastCurve().getSegment2(),
                             curve.getSegment1(),
                             null, !closed);
@@ -1338,6 +1351,4 @@ PathItem.inject(new function() {
             return point;
         }
     };
-});
-
-export default PathItem;
+};

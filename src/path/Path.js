@@ -12,10 +12,11 @@
 
 import { Base } from '../core/Base';
 import Numerical from '../util/Numerical';
+import Formatter from '../util/Formatter';
 import { PathItem } from './PathItem';
-import { CompoundPath } from './CompoundPath'
 import { Segment } from './Segment';
 import { SegmentSelection } from './SegmentSelection';
+import { getValues } from './CurveUtils';
 import { Curve, CURVE_EVALUATE_METHODS } from './Curve';
 import { Rectangle } from '../basic/Rectangle';
 import { Point } from '../basic/Point';
@@ -25,6 +26,7 @@ import { Item } from '../item/Item';
 import { Line } from '../basic/Line';
 import { PathFitter } from './PathFitter';
 import { PathFlattener } from './PathFlattener';
+import { HitResult } from '../item/HitResult';
 import { Shape } from '../item/Shape';
 import { Size } from '../basic/Size';
 import { GlobalScope } from '../core/GlobalScope';
@@ -177,7 +179,7 @@ export const Path = PathItem.extend(/** @lends Path# */{
     getStyle: function() {
         // If this path is part of a compound-path, return the parent's style.
         var parent = this._parent;
-        return (parent instanceof CompoundPath ? parent : this)._style;
+        return (parent && parent.instanceOf('CompoundPath') ? parent : this)._style;
     },
 
     /**
@@ -855,7 +857,7 @@ export const Path = PathItem.extend(/** @lends Path# */{
             area = 0;
             for (var i = 0, l = segments.length; i < l; i++) {
                 var last = i + 1 === l;
-                area += Curve.getArea(Curve.getValues(
+                area += Curve.getArea(getValues(
                         segments[i], segments[last ? 0 : i + 1],
                         // If this is the last curve and the last is not closed,
                         // connect with a straight curve and ignore the handles.
@@ -1585,7 +1587,7 @@ export const Path = PathItem.extend(/** @lends Path# */{
     // NOTE: Documentation is in PathItem#compare()
     compare: function compare(path) {
         // If a compound-path is involved, redirect to PathItem#compare()
-        if (!path || path instanceof CompoundPath)
+        if (!path || (path.instanceOf && path.instanceOf('CompoundPath')))
             return compare.base.call(this, path);
         var curves1 = this.getCurves(),
             curves2 = path.getCurves(),
@@ -2653,6 +2655,24 @@ new function() { // PostScript-style drawing commands
 
 // Mess with indentation in order to get more line-space below:
 statics: {
+    fromShape: function(shape, insert) {
+        // TODO: Move to Path.createTYPE creators instead of fake constructors.
+        var path = new Path[Base.capitalize(shape._type)]({
+            center: new Point(),
+            size: shape._size,
+            radius: shape._radius,
+            insert: false
+        });
+        path.copyAttributes(shape);
+        // The created path will inherit #applyMatrix from this Shape, hence it
+        // will always be false.
+        // Respect the setting of paper.settings.applyMatrix for new paths:
+        if (GlobalScope.settings.applyMatrix)
+            path.setApplyMatrix(true);
+        if (insert === undefined || insert)
+            path.insertAbove(shape);
+        return path;
+    },
     /**
      * Returns the bounding rectangle of the item excluding stroke width.
      *

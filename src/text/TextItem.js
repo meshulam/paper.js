@@ -12,6 +12,7 @@
 import { Base } from '../core/Base';
 import { Item } from '../item/Item';
 import { Point } from '../basic/Point';
+import { Change } from '../item/ChangeFlag';
 
 /**
  * @name TextItem

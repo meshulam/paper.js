@@ -11,6 +11,10 @@
  */
 
 import { test, equals } from '../helpers';
+import {
+    paper, Path, CompoundPath, PointText, SymbolDefinition,
+    Group, Rectangle, Point, Segment, Shape,
+} from '../../src';
 
 QUnit.module('Item Bounds');
 

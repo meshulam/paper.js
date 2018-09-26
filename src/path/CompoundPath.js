@@ -12,6 +12,9 @@
 
 import { Base } from '../core/Base';
 import { PathItem } from './PathItem';
+import { Path } from './Path';
+import { Item } from '../item/Item';
+
 /**
  * @name CompoundPath
  *
@@ -124,13 +127,14 @@ export const CompoundPath = PathItem.extend(/** @lends CompoundPath# */{
         // items list by adding their children to the it replacing their parent.
         for (var i = items.length - 1; i >= 0; i--) {
             var item = list[i];
+            const isPaperObj = item && item.instanceOf;
             // Clone the list array before modifying it, as it may be a passed
             // children array from another item.
-            if (list === items && !(item.instanceOf('Path')))
+            if (list === items && !(isPaperObj && item.instanceOf('Path')))
                 list = Base.slice(list);
             if (Array.isArray(item)) {
                 list[i] = new Path({ segments: item, insert: false });
-            } else if (item.instanceOf('CompoundPath')) {
+            } else if (isPaperObj && item.instanceOf('CompoundPath')) {
                 list.splice.apply(list, [i, 1].concat(item.removeChildren()));
                 item.remove();
             }

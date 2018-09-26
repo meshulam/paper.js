@@ -21,6 +21,7 @@ import { Style } from '../style/Style';
 import { Change, ChangeFlag } from './ChangeFlag';
 import { ItemSelection } from './ItemSelection';
 import { CanvasProvider } from '../canvas/CanvasProvider';
+import { HitResult } from './HitResult';
 
 /**
  * @name Item
@@ -822,7 +823,7 @@ new function() { // Injection scope for various item event handlers
     beans: true,
 
     getBounds: function(matrix, options) {
-        var hasMatrix = options || (matrix && matrix.instanceOf('Matrix')),
+        var hasMatrix = options || (matrix && matrix.instanceOf && matrix.instanceOf('Matrix')),
             opts = Base.set({}, hasMatrix ? options : matrix,
                     this._boundsOptions);
         // We can only cache the bounds if the path uses stroke-scaling, or if
@@ -1794,14 +1795,14 @@ new function() { // Injection scope for various item event handlers
     // TODO: Move #getIntersections() to Item, make it handle all type of items
     // through _asPathItem(), and support Group items as well, taking nested
     // matrices into account properly!
-    _asPathItem: function() {
-        // Creates a temporary rectangular path item with this item's bounds.
-        return new Path.Rectangle({
-            rectangle: this.getInternalBounds(),
-            matrix: this._matrix,
-            insert: false,
-        });
-    },
+    // _asPathItem: function() {
+    //     // Creates a temporary rectangular path item with this item's bounds.
+    //     return new Path.Rectangle({
+    //         rectangle: this.getInternalBounds(),
+    //         matrix: this._matrix,
+    //         insert: false,
+    //     });
+    // },
 
     // DOCS:
     // TEST:

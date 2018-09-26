@@ -11,6 +11,8 @@
  */
 import { Base } from '../core/Base';
 import { Curve, CURVE_EVALUATE_METHODS } from './Curve';
+import { getValues, isStraight, subdivide } from './CurveUtils';
+
 /**
  * @name PathFlattener
  * @class
@@ -55,7 +57,7 @@ export const PathFlattener = Base.extend({
         // Iterate through all curves and compute the parts for each of them,
         // by recursively calling computeParts().
         function addCurve(segment1, segment2) {
-            var curve = Curve.getValues(segment1, segment2, matrix);
+            var curve = getValues(segment1, segment2, matrix);
             curves.push(curve);
             computeParts(curve, segment1._index, 0, 1);
         }
@@ -63,12 +65,12 @@ export const PathFlattener = Base.extend({
         function computeParts(curve, index, t1, t2) {
             // Check if the t-span is big enough for subdivision.
             if ((t2 - t1) > minSpan
-                    && !(ignoreStraight && Curve.isStraight(curve))
+                    && !(ignoreStraight && isStraight(curve))
                     // After quite a bit of testing, a default flatness of 0.25
                     // appears to offer a good trade-off between speed and
                     // precision for display purposes.
                     && !Curve.isFlatEnough(curve, flatness || 0.25)) {
-                var halves = Curve.subdivide(curve, 0.5),
+                var halves = subdivide(curve, 0.5),
                     tMid = (t1 + t2) / 2;
                 // Recursively subdivide and compute parts again.
                 computeParts(halves[0], index, t1, tMid);
