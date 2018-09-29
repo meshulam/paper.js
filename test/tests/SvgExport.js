@@ -10,7 +10,8 @@
  * All rights reserved.
  */
 
-import { isNode, test, equals } from '../helpers';
+import { isNode, test, equals, createSVG, compareSVG } from '../helpers';
+import { paper, Group, Path, Size, Point, Shape, Color, Rectangle, } from '../../src';
 
 QUnit.module('SvgExport');
 
@@ -147,8 +148,8 @@ if (!isNode) {
             fillColor: 'yellow'
         });
         rect.rotate(-20);
-        var svg = project.exportSVG({ bounds: 'content', asString: true });
-        compareSVG(assert.async(), svg, project.activeLayer);
+        var svg = paper.project.exportSVG({ bounds: 'content', asString: true });
+        compareSVG(assert.async(), svg, paper.project.activeLayer);
     });
 
     test('Export gradients', function(assert) {
@@ -188,8 +189,8 @@ if (!isNode) {
 
         rect.rotate(45).scale(0.7);
 
-        var svg = project.exportSVG({ bounds: 'content', asString: true });
-        compareSVG(assert.async(), svg, project.activeLayer, null, {
+        var svg = paper.project.exportSVG({ bounds: 'content', asString: true });
+        compareSVG(assert.async(), svg, paper.project.activeLayer, null, {
             tolerance: 1e-2
         });
     });
@@ -209,8 +210,8 @@ if (!isNode) {
             ],
             clipped: true
         });
-        var svg = project.exportSVG({ bounds: 'content', asString: true });
-        compareSVG(assert.async(), svg, project.activeLayer, null, {
+        var svg = paper.project.exportSVG({ bounds: 'content', asString: true });
+        compareSVG(assert.async(), svg, paper.project.activeLayer, null, {
             tolerance: 1e-2
         });
     });

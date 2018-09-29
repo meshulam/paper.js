@@ -15,6 +15,7 @@ import { Base } from '../core/Base';
 import { CanvasProvider } from '../canvas/CanvasProvider';
 import { Gradient } from './Gradient';
 import { Point } from '../basic/Point';
+import { Change } from '../item/ChangeFlag';
 
 /**
  * @name Color

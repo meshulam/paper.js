@@ -24,6 +24,7 @@ import { ChangeFlag, Change } from '../item/ChangeFlag';
 import { ItemSelection } from '../item/ItemSelection';
 import { Item } from '../item/Item';
 import { Line } from '../basic/Line';
+import { Matrix } from '../basic/Matrix';
 import { PathFitter } from './PathFitter';
 import { PathFlattener } from './PathFlattener';
 import { HitResult } from '../item/HitResult';

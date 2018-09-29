@@ -9,8 +9,9 @@
  *
  * All rights reserved.
  */
+import { Base } from '../core/Base';
 
-var Http = {
+export const Http = {
     request: function(options) {
         // Code borrowed from Coffee Script and extended:
         var xhr = new self.XMLHttpRequest();

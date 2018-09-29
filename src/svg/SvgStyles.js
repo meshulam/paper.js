@@ -9,8 +9,9 @@
  *
  * All rights reserved.
  */
+import { Base } from '../core/Base';
 
-var SvgStyles = Base.each({
+export const SvgStyles = Base.each({
     // Fill
     fillColor: ['fill', 'color'],
     fillRule: ['fill-rule', 'string'],
@@ -25,9 +26,10 @@ var SvgStyles = Base.each({
     }, function(item, value) {
         // no inheritance, only applies to graphical elements
         return !value // false, meaning non-scaling-stroke
-                && (item instanceof PathItem
-                    || item instanceof Shape
-                    || item instanceof TextItem);
+            && (item && item.instanceOf &&
+                (item.instanceOf('PathItem')
+                    || item.instanceOf('Shape')
+                    || item.instanceOf('TextItem')));
     }],
     miterLimit: ['stroke-miterlimit', 'number'],
     dashArray: ['stroke-dasharray', 'array'],

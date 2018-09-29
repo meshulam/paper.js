@@ -10,6 +10,11 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+import {
+    paper, Path, SymbolDefinition, SymbolItem, Rectangle, Group, Point,
+} from '../../src';
+
 QUnit.module('Symbol & Placed Symbol');
 
 test('SymbolItem#bounds', function() {

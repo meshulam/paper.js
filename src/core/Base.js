@@ -11,6 +11,7 @@
  */
 
 import DefaultBase from 'straps';
+import Formatter from '../util/Formatter';
 
 /**
  * @name Base
@@ -569,8 +570,8 @@ statics: /** @lends Base */{
                     // these to be created on the fly in the active project into
                     // which we're importing (except for if it's a preexisting
                     // target layer).
-                    if (args.length === 1 && obj instanceof Item
-                            && (useTarget || !(obj instanceof Layer))) {
+                    if (args.length === 1 && instanceOf(obj, 'Item')
+                            && (useTarget || !(instanceOf(obj, 'Layer')))) {
                         var arg = args[0];
                         if (Base.isPlainObject(arg))
                             arg.insert = false;

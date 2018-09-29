@@ -11,6 +11,11 @@
  */
 
 import { test, equals } from '../helpers';
+import {
+    paper,
+    Project, Point, Size, Rectangle, Path, CompoundPath, Color,
+    Gradient, SymbolDefinition, PointText, Group,
+} from '../../src';
 
 QUnit.module('JSON');
 
@@ -250,7 +255,7 @@ test('Color#importJSON()', function() {
 
 test('Path#importJSON()', function() {
     var path = new Path();
-    var layer = project.activeLayer;
+    var layer = paper.project.activeLayer;
     equals(function() { return path.parent === layer; }, true);
     path.importJSON('["Path",{"segments":[[[50,100],[0,27.61424],[0,-27.61424]],[[100,50],[-27.61424,0],[27.61424,0]],[[150,100],[0,-27.61424],[0,27.61424]],[[100,150],[27.61424,0],[-27.61424,0]]],"closed":true,"fillColor":[1,0,0]}]');
     equals(function() { return path.bounds; }, { x: 50, y: 50, width: 100, height: 100 });

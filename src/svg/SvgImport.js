@@ -9,12 +9,32 @@
  *
  * All rights reserved.
  */
+import { Base } from '../core/Base';
+import { Point } from '../basic/Point';
+import { Size } from '../basic/Size';
+import { Rectangle } from '../basic/Rectangle';
+import { Group } from '../item/Group';
+import { SymbolDefinition } from '../item/SymbolDefinition';
+import { GradientStop } from '../style/GradientStop';
+import { Gradient } from '../style/Gradient';
+import { Color } from '../style/Color';
+import { Raster } from '../item/Raster';
+import { Path } from '../path/Path';
+import { PathItem } from '../path/PathItem';
+import { PointText } from '../text/PointText';
+import { Matrix } from '../basic/Matrix';
+import { Shape } from '../item/Shape';
+import { SvgStyles } from './SvgStyles';
+import { SvgElement } from './SvgElement';
+import { DomElement } from '../dom/DomElement';
+import { GlobalScope } from '../core/GlobalScope';
+import { Http } from '../net/Http';
 
 /**
  * A function scope holding all the functionality needed to convert a SVG DOM
  * to a Paper.js DOM.
  */
-new function() {
+export function injectSvgImport(ProjectCls, ItemCls) {
     // Define a couple of helper functions to easily read values from SVG
     // objects, dealing with baseVal, and item lists.
     // index is option, and if passed, causes a lookup in a list.
@@ -574,7 +594,7 @@ new function() {
             next;
         if (isRoot && isElement) {
             // Set rootSize to view size, as getSize() may refer to it (#1242).
-            rootSize = paper.getView().getSize();
+            rootSize = GlobalScope.getView().getSize();
             // Now set rootSize to the root element size, and fall-back to view.
             rootSize = getSize(node, null, null, true) || rootSize;
             // We need to move the SVG node to the current document, so default
@@ -597,7 +617,7 @@ new function() {
         // content and children, as this is how SVG works too, but preserve the
         // current setting so we can restore it after. Also don't insert them
         // into the scene graph automatically, as we do so by hand.
-        var settings = paper.settings,
+        var settings = GlobalScope.settings,
             applyMatrix = settings.applyMatrix,
             insertItems = settings.insertItems;
         settings.applyMatrix = false;
@@ -652,18 +672,18 @@ new function() {
         options = typeof options === 'function' ? { onLoad: options }
                 : options || {};
         // Remember current scope so we can restore it in onLoad.
-        var scope = paper,
+        var scope = GlobalScope,
             item = null;
 
         function onLoad(svg) {
-            try {
+            // try {
                 var node = typeof svg === 'object' ? svg : new self.DOMParser()
                         .parseFromString(svg, 'image/svg+xml');
                 if (!node.nodeName) {
                     node = null;
                     throw new Error('Unsupported SVG source: ' + source);
                 }
-                paper = scope;
+                // paper = scope;       // MMTODO: is scope actually mutable?
                 item = importNode(node, options, true);
                 if (!options || options.insert !== false) {
                     // TODO: Implement support for multiple Layers on Project.
@@ -672,9 +692,9 @@ new function() {
                 var onLoad = options.onLoad;
                 if (onLoad)
                     onLoad(item, svg);
-            } catch (e) {
-                onError(e);
-            }
+            // } catch (e) {
+            //     onError(e);
+            // }
         }
 
         function onError(message, status) {
@@ -723,14 +743,14 @@ new function() {
     }
 
     // NOTE: Documentation is in Item#importSVG()
-    Item.inject({
+    ItemCls.inject({
         importSVG: function(node, options) {
             return importSVG(node, options, this);
         }
     });
 
     // NOTE: Documentation is in Project#importSVG()
-    Project.inject({
+    ProjectCls.inject({
         importSVG: function(node, options) {
             this.activate();
             return importSVG(node, options, this);

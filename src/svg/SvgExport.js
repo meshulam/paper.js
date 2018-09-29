@@ -14,7 +14,16 @@
  * A function scope holding all the functionality needed to convert a
  * Paper.js DOM to a SVG DOM.
  */
-new function() {
+
+import Numerical from '../util/Numerical';
+import Formatter from '../util/Formatter';
+import UID from '../util/UID';
+import { Base } from '../core/Base';
+import { SvgElement } from './SvgElement';
+import { SvgStyles } from './SvgStyles';
+import { Rectangle } from '../basic/Rectangle';
+
+export function injectSvgExport(ProjectCls, ItemCls) {
     // TODO: Consider moving formatter into options object, and pass it along.
     var formatter;
 
@@ -398,14 +407,14 @@ new function() {
         return options;
     }
 
-    Item.inject({
+    ItemCls.inject({
         exportSVG: function(options) {
             options = setOptions(options);
             return exportDefinitions(exportSVG(this, options, true), options);
         }
     });
 
-    Project.inject({
+    ProjectCls.inject({
         exportSVG: function(options) {
             options = setOptions(options);
             var children = this._children,
@@ -416,7 +425,7 @@ new function() {
                 rect = bounds === 'view'
                     ? new Rectangle([0, 0], view.getViewSize())
                     : bounds === 'content'
-                        ? Item._getBounds(children, matrix, { stroke: true })
+                        ? ItemCls._getBounds(children, matrix, { stroke: true })
                             .rect
                         : Rectangle.read([bounds], 0, { readNull: true }),
                 attrs = {

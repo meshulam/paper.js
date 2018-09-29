@@ -14,7 +14,7 @@ import resemble from 'resemblejs';
 
 import {
     Base, Project, Raster, PathItem, CompoundPath,
-    Group, Shape,
+    Group, Shape, Item,
 } from '../src/index';
 import { GlobalScope as paper } from '../src/core/GlobalScope';
 
@@ -567,8 +567,10 @@ export {
     compareSVG,
     compareItem,
     compareBoolean,
+    comparePixels,
     equals,
     test,
     getFunctionMessage,
+    createSVG,
 }
 

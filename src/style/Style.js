@@ -14,6 +14,7 @@ import { Base } from '../core/Base';
 import { Point } from '../basic/Point';
 import { Change } from '../item/ChangeFlag';
 import { Color } from './Color'
+import { GlobalScope } from '../core/GlobalScope';
 
 /**
  * @name Style
@@ -150,7 +151,7 @@ export const Style = Base.extend(new function() {
             this._values = {};
             this._owner = _owner;
             this._project = _owner && _owner._project || _project
-                    || paper.project;
+                    || GlobalScope.project;
             // Use different defaults based on the owner
             this._defaults = !_owner || _owner.instanceOf('Group') ? GROUP_DEFAULTS
                     : _owner.instanceOf('TextItem') ? TEXT_DEFAULTS

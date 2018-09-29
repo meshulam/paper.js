@@ -34,13 +34,23 @@ export { Segment } from './path/Segment';
 
 export { GlobalScope as paper } from './core/GlobalScope';
 
-/// Add Item#rasterize()
 import { Item } from './item/Item';
+import { Project } from './item/Project';
+import { Path } from './path/Path';
+import { Shape } from './item/Shape';
+import { PathItem } from './path/PathItem';
+import { Base } from './core/Base';
+import { PaperScope } from './core/PaperScope';
+import { DomEvent } from './dom/DomEvent';
+import { DomElement } from './dom/DomElement';
+import Numerical from './util/Numerical';
+
+
+/// Add Item#rasterize()
 import { injectRasterize } from './item/Item.Rasterize';
 injectRasterize(Item);
 
 /// Add Path.Circle, Path.Rectangle, etc
-import { Path } from './path/Path';
 import { injectConstructors } from './path/Path.Constructors';
 injectConstructors(Path);
 
@@ -56,26 +66,21 @@ import './path/PathItem.Create';
 
 /// Inject _jItem helpers for intersects()
 import { injectAsPathItemHelpers } from './path/AsPathItemHelpers';
-import { Shape } from './item/Shape';
 injectAsPathItemHelpers(Shape);
 
 /// Add PathItem boolean operations
-import { PathItem } from './path/PathItem';
 import { injectBoolean } from './path/PathItem.Boolean';
 injectBoolean(PathItem);
 
 /// Add Project-specific hit test fns
 import { injectHitTestFnsToProject } from './item/Item';
-import { Project } from './item/Project';
 injectHitTestFnsToProject(Project);
 
-///
-import { Base } from './core/Base';
-import { PaperScope } from './core/PaperScope';
-import { DomEvent } from './dom/DomEvent';
-import { DomElement } from './dom/DomElement';
-
-import Numerical from './util/Numerical';
+/// add exportSVG/importSVG methods
+import { injectSvgExport } from './svg/SvgExport';
+import { injectSvgImport } from './svg/SvgImport';
+injectSvgExport(Project, Item);
+injectSvgImport(Project, Item);
 
 var Key;
 

@@ -10,7 +10,11 @@
  * All rights reserved.
  */
 
-import { isNode, test, equals } from '../helpers';
+import { isNode, isPhantom, test, equals, createSVG, compareSVG } from '../helpers';
+import {
+    paper,
+    Path, Size, Point, Rectangle,
+} from '../../src';
 
 QUnit.module('SvgImport');
 
@@ -126,7 +130,7 @@ test('Import SVG without insertion', function() {
     var svg = createSVG('path', { d: '' });
     var imported = paper.project.importSVG(svg, { insert: true });
     equals(function() {
-        return imported.parent === project.activeLayer;
+        return imported.parent === paper.project.activeLayer;
     }, true);
     var imported = paper.project.importSVG(svg, { insert: false });
     equals(function() {
@@ -136,7 +140,7 @@ test('Import SVG without insertion', function() {
 
 function importSVG(assert, url, message, options) {
     var done = assert.async();
-    project.importSVG(url, {
+    paper.project.importSVG(url, {
         applyMatrix: false,
 
         onLoad: function(item, svg) {
@@ -172,12 +176,14 @@ if (!isNode) {
     // TODO: Investigate why Phantom struggles with this file:
     if (!isPhantom)
         svgFiles['gradients-2'] = {};
-    Base.each(svgFiles, function(options, name) {
+    for (let name in svgFiles) {
+        const options = svgFiles[name];
+
         name += '.svg';
         test('Import ' + name, function(assert) {
             importSVG(assert, 'assets/' + name, null, options);
         });
-    });
+    }
 
     test('Import inexistent file', function(assert) {
         importSVG(assert, 'assets/inexistent.svg',

@@ -10,6 +10,7 @@
  * All rights reserved.
  */
 import Numerical from '../util/Numerical';
+import Formatter from '../util/Formatter';
 import { Base } from '../core/Base';
 import { classify, getLength, getPeaks } from './CurveUtils';
 

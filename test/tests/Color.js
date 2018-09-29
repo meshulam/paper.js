@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 
-import { test, equals } from '../helpers';
+import { test, equals, comparePixels } from '../helpers';
 import { Path, Color, Shape, GradientStop, Gradient } from '../../src';
 
 QUnit.module('Color');

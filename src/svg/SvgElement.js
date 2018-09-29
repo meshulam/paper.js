@@ -15,7 +15,7 @@
  * @namespace
  * @private
  */
-var SvgElement = new function() {
+export const SvgElement = new function SvgElement() {
     // SVG related namespaces
     var svg = 'http://www.w3.org/2000/svg',
         xmlns = 'http://www.w3.org/2000/xmlns',

@@ -15,7 +15,7 @@ require('./Size.js');
 require('./Rectangle.js');
 require('./Matrix.js');
 
-// require('./Color.js');
+require('./Color.js');
 
 require('./Emitter.js');
 
@@ -48,7 +48,7 @@ require('./CurveLocation.js');
 
 require('./Style.js');
 
-// require('./SymbolItem.js');
+require('./SymbolItem.js');
 
 require('./Raster.js');
 
@@ -56,9 +56,9 @@ require('./TextItem.js');
 
 require('./HitResult.js');
 
-// require('./JSON.js');
+require('./JSON.js');
 
-// require('./SvgImport.js');
-// require('./SvgExport.js');
+require('./SvgImport.js');
+require('./SvgExport.js');
 
 require('./Numerical.js');
