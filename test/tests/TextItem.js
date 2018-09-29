@@ -10,6 +10,9 @@
  * All rights reserved.
  */
 
+import { test, equals } from '../helpers';
+import { PointText, Color, Point, Rectangle } from '../../src';
+
 QUnit.module('TextItem');
 
 test('PointText', function() {

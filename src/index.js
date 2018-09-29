@@ -13,8 +13,9 @@ export { Layer } from './item/Layer';
 export { Shape } from './item/Shape';
 export { Project } from './item/Project';
 export { Raster } from './item/Raster';
-export { SymbolItem } from './Item/SymbolItem';
-export { SymbolDefinition } from './Item/SymbolDefinition';
+export { SymbolItem } from './item/SymbolItem';
+export { SymbolDefinition } from './item/SymbolDefinition';
+export { HitResult } from './item/HitResult';
 
 export { Color } from './style/Color';
 export { Style } from './style/Style';
@@ -43,6 +44,9 @@ import { Path } from './path/Path';
 import { injectConstructors } from './path/Path.Constructors';
 injectConstructors(Path);
 
+// Path.Rectangle so Item can do proper intersection checks
+Item.inject({ statics: { _PathRectangle: Path.Rectangle } });
+
 /// Add style getters/setters on Item
 import { injectStyleAccessors } from './style/Style';
 injectStyleAccessors(Item);
@@ -50,14 +54,20 @@ injectStyleAccessors(Item);
 /// Inject PathItem.create factory
 import './path/PathItem.Create';
 
-/// Inject _asPathItem helpers for intersects()
+/// Inject _jItem helpers for intersects()
 import { injectAsPathItemHelpers } from './path/AsPathItemHelpers';
-injectAsPathItemHelpers();
+import { Shape } from './item/Shape';
+injectAsPathItemHelpers(Shape);
 
 /// Add PathItem boolean operations
 import { PathItem } from './path/PathItem';
 import { injectBoolean } from './path/PathItem.Boolean';
 injectBoolean(PathItem);
+
+/// Add Project-specific hit test fns
+import { injectHitTestFnsToProject } from './item/Item';
+import { Project } from './item/Project';
+injectHitTestFnsToProject(Project);
 
 ///
 import { Base } from './core/Base';
@@ -78,7 +88,4 @@ PaperScope.inject(Base.exports, {
   // Export jsdom document and window too, for Node.js
   // document: document,
   // window: window,
-  // TODO: Remove in 1.0.0? (deprecated January 2016):
-  // Symbol: SymbolDefinition,
-  // PlacedSymbol: SymbolItem
 });

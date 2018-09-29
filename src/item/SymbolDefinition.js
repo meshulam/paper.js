@@ -15,6 +15,7 @@ import { Change, ChangeFlag } from './ChangeFlag';
 import { Item } from './Item';
 import { Point } from '../basic/Point';
 import { GlobalScope } from '../core/GlobalScope';
+import { SymbolItem } from './SymbolItem';
 
 /**
  * @name SymbolDefinition

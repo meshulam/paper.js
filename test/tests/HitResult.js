@@ -11,6 +11,10 @@
  */
 
 import { test, equals } from '../helpers';
+import {
+    paper, Group, Path, Segment, SymbolDefinition, Point, HitResult,
+    Size, Shape, PointText, Color, CompoundPath,
+} from '../../src';
 
 QUnit.module('HitResult');
 
@@ -777,6 +781,7 @@ test('hit-testing shapes with strokes and rounded corners (#1207)', function() {
       fillColor: 'blue',
       radius: 90
     });
+    var project = paper.project;
 
     var path = rect.toPath();
     path.visible = false;
@@ -821,7 +826,8 @@ test('hit-testing scaled items with different settings of view.zoom and item.str
             applyMatrix: true
         });
         item.scale(2);
-        view.zoom = zoom;
+        paper.view.zoom = zoom;
+        var project = paper.project;
 
         var tolerance = 10,
             options = { tolerance: tolerance, fill: true, stroke: true },
@@ -866,7 +872,7 @@ test('hit-testing items scaled to 0', function() {
 
     item.scale(0);
 
-    testHitResult(project.hitTest(item.position), null,
+    testHitResult(paper.project.hitTest(item.position), null,
             'should not throw an exception.');
 });
 

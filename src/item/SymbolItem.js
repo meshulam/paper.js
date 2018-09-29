@@ -13,6 +13,7 @@
 import { Item } from './Item';
 import { SymbolDefinition } from './SymbolDefinition';
 import { Change } from './ChangeFlag';
+import { Point } from '../basic/Point';
 
 /**
  * @name SymbolItem

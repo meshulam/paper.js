@@ -11,6 +11,7 @@
  */
 
 import { Base } from '../core/Base';
+import { GlobalScope } from '../core/GlobalScope';
 
 /**
  * @name HitResult
@@ -112,7 +113,7 @@ export const HitResult = Base.extend(/** @lends HitResult# */{
                 // CompoundPath, Shape, Raster, SymbolItem, ...
                 type: null,
                 // Tolerance
-                tolerance: paper.settings.hitTolerance,
+                tolerance: GlobalScope.settings.hitTolerance,
                 // Hit the fill of items
                 fill: !options,
                 // Hit the curves of path items, taking into account the stroke

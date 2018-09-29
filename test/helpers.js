@@ -569,5 +569,6 @@ export {
     compareBoolean,
     equals,
     test,
+    getFunctionMessage,
 }
 

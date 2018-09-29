@@ -29,6 +29,7 @@ import { PathFlattener } from './PathFlattener';
 import { HitResult } from '../item/HitResult';
 import { Shape } from '../item/Shape';
 import { Size } from '../basic/Size';
+import { getStrokePadding } from '../basic/Utils';
 import { GlobalScope } from '../core/GlobalScope';
 
 /**
@@ -1698,7 +1699,7 @@ export const Path = PathItem.extend(/** @lends Path# */{
                 // Add the stroke radius to tolerance padding, taking
                 // #strokeScaling into account through _getStrokeMatrix().
                 strokePadding = strokePadding.add(
-                    Path._getStrokePadding(strokeRadius, strokeMatrix));
+                    getStrokePadding(strokeRadius, strokeMatrix));
             } else {
                 join = cap = 'round';
             }
@@ -2724,8 +2725,7 @@ statics: {
             stroke = style.hasStroke(),
             strokeWidth = style.getStrokeWidth(),
             strokeMatrix = stroke && path._getStrokeMatrix(matrix, options),
-            strokePadding = stroke && Path._getStrokePadding(strokeWidth,
-                strokeMatrix),
+            strokePadding = stroke && getStrokePadding(strokeWidth, strokeMatrix),
             // Start with normal path bounds with added stroke padding. Then we
             // only need to look at each segment and handle join / cap / miter.
             bounds = Path.getBounds(segments, closed, path, matrix, options,
@@ -2785,48 +2785,6 @@ statics: {
             addCap(segments[segments.length - 1], cap);
         }
         return bounds;
-    },
-
-    /**
-     * Returns the horizontal and vertical padding that a transformed round
-     * stroke adds to the bounding box, by calculating the dimensions of a
-     * rotated ellipse.
-     */
-    _getStrokePadding: function(radius, matrix) {
-        if (!matrix)
-            return [radius, radius];
-        // If a matrix is provided, we need to rotate the stroke circle
-        // and calculate the bounding box of the resulting rotated elipse:
-        // Get rotated hor and ver vectors, and determine rotation angle
-        // and elipse values from them:
-        var hor = new Point(radius, 0).transform(matrix),
-            ver = new Point(0, radius).transform(matrix),
-            phi = hor.getAngleInRadians(),
-            a = hor.getLength(),
-            b = ver.getLength();
-        // Formula for rotated ellipses:
-        // x = cx + a*cos(t)*cos(phi) - b*sin(t)*sin(phi)
-        // y = cy + b*sin(t)*cos(phi) + a*cos(t)*sin(phi)
-        // Derivates (by Wolfram Alpha):
-        // derivative of x = cx + a*cos(t)*cos(phi) - b*sin(t)*sin(phi)
-        // dx/dt = a sin(t) cos(phi) + b cos(t) sin(phi) = 0
-        // derivative of y = cy + b*sin(t)*cos(phi) + a*cos(t)*sin(phi)
-        // dy/dt = b cos(t) cos(phi) - a sin(t) sin(phi) = 0
-        // This can be simplified to:
-        // tan(t) = -b * tan(phi) / a // x
-        // tan(t) =  b * cot(phi) / a // y
-        // Solving for t gives:
-        // t = pi * n - arctan(b * tan(phi) / a) // x
-        // t = pi * n + arctan(b * cot(phi) / a)
-        //   = pi * n + arctan(b / tan(phi) / a) // y
-        var sin = Math.sin(phi),
-            cos = Math.cos(phi),
-            tan = Math.tan(phi),
-            tx = Math.atan2(b * tan, a),
-            ty = Math.atan2(b, tan * a);
-        // Due to symetry, we don't need to cycle through pi * n solutions:
-        return [Math.abs(a * Math.cos(tx) * cos + b * Math.sin(tx) * sin),
-                Math.abs(b * Math.sin(ty) * cos + a * Math.cos(ty) * sin)];
     },
 
     _addBevelJoin: function(segment, join, radius, miterLimit, matrix,
@@ -2910,8 +2868,8 @@ statics: {
                 joinRadius = strokeRadius * style.getMiterLimit();
             if (style.getStrokeCap() === 'square')
                 joinRadius = Math.max(joinRadius, strokeRadius * Math.SQRT2);
-            strokePadding = Path._getStrokePadding(strokeRadius, strokeMatrix);
-            joinPadding = Path._getStrokePadding(joinRadius, strokeMatrix);
+            strokePadding = getStrokePadding(strokeRadius, strokeMatrix);
+            joinPadding = getStrokePadding(joinRadius, strokeMatrix);
         }
         var coords = new Array(6),
             x1 = Infinity,

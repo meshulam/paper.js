@@ -52,13 +52,13 @@ require('./Style.js');
 
 require('./Raster.js');
 
-// require('./TextItem.js');
+require('./TextItem.js');
 
-// require('./HitResult.js');
+require('./HitResult.js');
 
 // require('./JSON.js');
 
 // require('./SvgImport.js');
 // require('./SvgExport.js');
 
-// require('./Numerical.js');
+require('./Numerical.js');

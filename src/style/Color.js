@@ -13,6 +13,8 @@
 import Formatter from '../util/Formatter';
 import { Base } from '../core/Base';
 import { CanvasProvider } from '../canvas/CanvasProvider';
+import { Gradient } from './Gradient';
+import { Point } from '../basic/Point';
 
 /**
  * @name Color

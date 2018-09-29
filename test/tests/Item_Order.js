@@ -10,7 +10,7 @@
  * All rights reserved.
  */
 
-import { test, equals } from '../helpers';
+import { test, equals, getFunctionMessage } from '../helpers';
 import { paper, Path, Group, Layer } from '../../src';
 
 QUnit.module('Item Order');

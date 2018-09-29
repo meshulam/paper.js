@@ -15,13 +15,71 @@ import { Emitter } from '../core/Emitter';
 import { GlobalScope } from '../core/GlobalScope';
 import { Matrix, Point, LinkedPoint, LinkedRectangle, Rectangle, Size } from '../basic/index';
 import UID from '../util/UID';
+import Numerical from '../util/Numerical';
 import { BlendMode } from '../canvas/BlendMode';
 import { Style } from '../style/Style';
+import { getStrokePadding } from '../basic/Utils';
 
 import { Change, ChangeFlag } from './ChangeFlag';
 import { ItemSelection } from './ItemSelection';
 import { CanvasProvider } from '../canvas/CanvasProvider';
 import { HitResult } from './HitResult';
+
+
+// Injection scope for hit-test functions shared with project
+const hitTestFns = (isProject) => new function hitTestFnMixin() {
+    function hitTest(/* point, options */) {
+        return this._hitTest(
+            Point.read(arguments),
+            HitResult.getOptions(arguments));
+    }
+
+    function hitTestAll(/* point, options */) {
+        var point = Point.read(arguments),
+            options = HitResult.getOptions(arguments),
+            all = [];
+        this._hitTest(point, Base.set({ all: all }, options));
+        return all;
+    }
+
+    function hitTestChildren(point, options, viewMatrix, _exclude) {
+        // NOTE: _exclude is only used in Group#_hitTestChildren()
+        // to exclude #clipItem
+        var children = this._children;
+        if (children) {
+            // Loop backwards, so items that get drawn last are tested first.
+            for (var i = children.length - 1; i >= 0; i--) {
+                var child = children[i];
+                var res = child !== _exclude && child._hitTest(point, options,
+                    viewMatrix);
+                // Only return the found result if we're not asked to collect
+                // all matches through hitTestAll()
+                if (res && !options.all)
+                    return res;
+            }
+        }
+        return null;
+    }
+
+    if (isProject) {
+        return {
+            hitTest: hitTest,
+            hitTestAll: hitTestAll,
+            _hitTest: hitTestChildren
+        };
+    }
+
+    return {
+        // NOTE: Documentation is in the scope that follows.
+        hitTest: hitTest,
+        hitTestAll: hitTestAll,
+        _hitTestChildren: hitTestChildren,
+    };
+};
+
+export function injectHitTestFnsToProject(ProjectCls) {
+    ProjectCls.inject(hitTestFns(true));
+}
 
 /**
  * @name Item
@@ -1795,14 +1853,14 @@ new function() { // Injection scope for various item event handlers
     // TODO: Move #getIntersections() to Item, make it handle all type of items
     // through _asPathItem(), and support Group items as well, taking nested
     // matrices into account properly!
-    // _asPathItem: function() {
-    //     // Creates a temporary rectangular path item with this item's bounds.
-    //     return new Path.Rectangle({
-    //         rectangle: this.getInternalBounds(),
-    //         matrix: this._matrix,
-    //         insert: false,
-    //     });
-    // },
+    _asPathItem: function() {
+        // Creates a temporary rectangular path item with this item's bounds.
+        return new Item._PathRectangle({
+            rectangle: this.getInternalBounds(),
+            matrix: this._matrix,
+            insert: false,
+        });
+    },
 
     // DOCS:
     // TEST:
@@ -1819,54 +1877,7 @@ new function() { // Injection scope for various item event handlers
                 _matrix, true).length > 0;
     }
 },
-new function() { // Injection scope for hit-test functions shared with project
-    function hitTest(/* point, options */) {
-        return this._hitTest(
-                Point.read(arguments),
-                HitResult.getOptions(arguments));
-    }
-
-    function hitTestAll(/* point, options */) {
-        var point = Point.read(arguments),
-            options = HitResult.getOptions(arguments),
-            all = [];
-        this._hitTest(point, Base.set({ all: all }, options));
-        return all;
-    }
-
-    function hitTestChildren(point, options, viewMatrix, _exclude) {
-        // NOTE: _exclude is only used in Group#_hitTestChildren()
-        // to exclude #clipItem
-        var children = this._children;
-        if (children) {
-            // Loop backwards, so items that get drawn last are tested first.
-            for (var i = children.length - 1; i >= 0; i--) {
-                var child = children[i];
-                var res = child !== _exclude && child._hitTest(point, options,
-                        viewMatrix);
-                // Only return the found result if we're not asked to collect
-                // all matches through hitTestAll()
-                if (res && !options.all)
-                    return res;
-            }
-        }
-        return null;
-    }
-
-    // MMTODO: Let project inject these on itself?
-    // Project.inject({
-    //     hitTest: hitTest,
-    //     hitTestAll: hitTestAll,
-    //     _hitTest: hitTestChildren
-    // });
-
-    return {
-        // NOTE: Documentation is in the scope that follows.
-        hitTest: hitTest,
-        hitTestAll: hitTestAll,
-        _hitTestChildren: hitTestChildren,
-    };
-}, /** @lends Item# */{
+hitTestFns(false), /** @lends Item# */{
     /**
      * {@grouptitle Hit-testing, Fetching and Matching Items}
      *
@@ -1961,8 +1972,7 @@ new function() { // Injection scope for hit-test functions shared with project
             // To calculate the correct 2D padding for tolerance, we therefore
             // need to apply the inverted item matrix.
             tolerancePadding = options._tolerancePadding = new Size(
-                    Path._getStrokePadding(tolerance,
-                        matrix._shiftless().invert()));
+                    getStrokePadding(tolerance, matrix._shiftless().invert()));
         // Transform point to local coordinates.
         point = matrix._inverseTransform(point);
         // If the matrix is non-reversible, point will now be `null`:
@@ -1979,7 +1989,7 @@ new function() { // Injection scope for hit-test functions shared with project
                 // Support legacy Item#type property to match hyphenated
                 // class-names.
                 || options.type && options.type !== Base.hyphenate(this._class)
-                || options.class && !(this.instanceOf(options.class.getClassName()))),
+                || options.class && !(this.instanceOf(options.class.name))),
             match = options.match,
             that = this,
             bounds,
@@ -2228,7 +2238,7 @@ new function() { // Injection scope for hit-test functions shared with project
                     inside: !!inside,
                     overlapping: !!overlapping,
                     rect: rect,
-                    path: overlapping && new Path.Rectangle({
+                    path: overlapping && new Item._PathRectangle({    // Injected ref
                         rectangle: rect,
                         insert: false
                     })

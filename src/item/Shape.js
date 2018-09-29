@@ -16,6 +16,7 @@ import { Item } from './Item';
 import { Point } from '../basic/Point';
 import { Rectangle } from '../basic/Rectangle';
 import { Size, LinkedSize } from '../basic/Size';
+import { getStrokePadding } from '../basic/Utils';
 import { Change } from './ChangeFlag';
 import { HitResult } from './HitResult';
 
@@ -278,7 +279,7 @@ export const Shape = Item.extend(/** @lends Shape# */{
         if (matrix)
             rect = matrix._transformBounds(rect);
         return strokeWidth
-                ? rect.expand(Path._getStrokePadding(strokeWidth,
+                ? rect.expand(getStrokePadding(strokeWidth,
                     this._getStrokeMatrix(matrix, options)))
                 : rect;
     }
@@ -350,7 +351,7 @@ new function() { // Scope for _contains() and _hitTestSelf() code.
                     radius = this._radius,
                     strokeRadius = hitStroke ? style.getStrokeWidth() / 2 : 0,
                     strokePadding = options._tolerancePadding.add(
-                        Path._getStrokePadding(strokeRadius,
+                        getStrokePadding(strokeRadius,
                             !style.getStrokeScaling() && strokeMatrix));
                 if (type === 'rectangle') {
                     var padding = strokePadding.multiply(2),
